@@ -30,7 +30,7 @@ jobs:
         with:
           deno-version: v1.2.0 
       - name: Install Rust
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       - name: Install nightly Rust
         run: rustup install nightly
       - name: Build swc
