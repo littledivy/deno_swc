@@ -1,0 +1,16 @@
+[package]
+name = "deno-swc"
+version = "0.0.1"
+authors = ["Divy Srivastava <dj.srivastava23@gmail.com>"]
+edition = "2018"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+deno_core = "0.47.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+futures = "0.3.4"
+swc = { git = "https://github.com/swc-project/swc" }
