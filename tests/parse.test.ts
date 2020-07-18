@@ -1,8 +1,8 @@
-import { parse } from "../mod.ts";
+import { parseTypescript } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
-Deno.test("parse", () => {
-  const result = parse({
+Deno.test("parse (no error)", () => {
+  const result = parseTypescript({
     src: "const x: number = 2;",
   });
   assertEquals(result, {
@@ -45,4 +45,9 @@ Deno.test("parse", () => {
     interpreter: null,
     span: { ctxt: 0, end: 20, start: 0 },
   });
+});
+
+Deno.test("parse (with errors)", () => {
+  const result = parseTypescript({ src: "x = 3 3" });
+  assertEquals(result, "failed to parse module");
 });
