@@ -52,15 +52,15 @@ const core = Deno.core as {
 };
 
 const {
-  compile_str
+  parse
 } = core.ops();
 
 const textDecoder = new TextDecoder();
 const textEncoder = new TextEncoder();
 
-export function compile(code: string) {
-  const response = core.dispatch(compile_str, textEncoder.encode(code));
-  let res = JSON.parse(textDecoder.decode(response));
-  if (res.error) throw new Error(res.error);
-  return res;
+export function swc_parse(code: string) {
+  const response = core.dispatch(parse, textEncoder.encode(code));
+  return JSON.parse(textDecoder.decode(response));
 }
+
+console.log(swc_parse("asd"));

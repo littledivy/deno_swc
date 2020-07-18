@@ -20,7 +20,7 @@ use swc::{
 
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
-    interface.register_op("parse", op_compile);
+    interface.register_op("parse", op_parse);
 }
 
 struct ParseTask {
@@ -31,7 +31,6 @@ struct ParseTask {
 
 fn op_parse(_interface: &mut dyn Interface, data: &[u8], _zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
-
     let handler = Arc::new(Handler::with_tty_emitter(
         common::errors::ColorConfig::Always,
         true,
@@ -39,16 +38,24 @@ fn op_parse(_interface: &mut dyn Interface, data: &[u8], _zero_copy: &mut [ZeroC
         Some(cm.clone()),
     ));
     let c = Compiler::new(cm.clone(), handler);
-    let fm = c.cm.new_source_file(FileName::Anon, src.value());
-    c.run(|| {
+    let src = "console.log('hi');";
+    let fm = c.cm.new_source_file(FileName::Anon, src.to_string());
+    let options = ParseOptions {
+        comments: true,
+        is_module: false,
+        syntax: swc::ecmascript::parser::Syntax::default(),
+        target: swc::ecmascript::parser::JscTarget::default()
+    };
+    let program = c.run(|| {
         c.parse_js(
             fm.clone(),
-            self.options.target,
-            self.options.syntax,
-            self.options.is_module,
-            self.options.comments,
+            options.target,
+            options.syntax,
+            options.is_module,
+            options.comments,
         )
-    });
-    let result_box: Buf = serde_json::to_vec(&response).unwrap().into_boxed_slice();
+    }).unwrap();
+    let result = serde_json::to_string(&program).expect("failed to serialize Program");
+    let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
     Op::Sync(result_box)
 }
