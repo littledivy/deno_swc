@@ -1,8 +1,8 @@
 import {
-  swc_parse
+  swc_parse_ts,
 } from "./swc_plugin/index.ts";
 import { ParseOptions } from "./types/options.ts";
 
 export function parse(opt: ParseOptions) {
-  return swc_parse(opt);
+  return JSON.parse(swc_parse_ts(opt));
 }
