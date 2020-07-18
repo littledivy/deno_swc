@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  format-check:
+  typescript-format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -22,6 +22,24 @@ jobs:
       - name: Format Check
         run: deno fmt --check
 
+  rust-format-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+      - uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+      - uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
 
   test:
     runs-on: ubuntu-latest
