@@ -1,1 +1,1 @@
-export { parseTypescript } from "./src/parse.ts";
+export { parseTypescript } from "./swc_deno/parse.ts";
