@@ -58,9 +58,9 @@ const {
 const textDecoder = new TextDecoder();
 const textEncoder = new TextEncoder();
 
-export function swc_parse(code: string) {
-  const response = core.dispatch(parse, textEncoder.encode(code));
+export function swc_parse(opt: { src: string }) {
+  const response = core.dispatch(parse, textEncoder.encode(JSON.stringify(opt)));
   return JSON.parse(textDecoder.decode(response));
 }
 
-console.log(swc_parse("asd"));
+console.log(swc_parse({ src: "import divy from 'asd';"}));

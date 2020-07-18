@@ -29,8 +29,15 @@ struct ParseTask {
     options: ParseOptions,
 }
 
-fn op_parse(_interface: &mut dyn Interface, data: &[u8], _zero_copy: &mut [ZeroCopyBuf]) -> Op {
+#[derive(Deserialize)]
+struct ParseArguments {
+    src: String,
+}
+
+fn op_parse(_interface: &mut dyn Interface,  zero_copy: &mut [ZeroCopyBuf]) -> Op {
+    let data = &zero_copy[0][..];
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
+    let params: ParseArguments = serde_json::from_slice(&data).unwrap();
     let handler = Arc::new(Handler::with_tty_emitter(
         common::errors::ColorConfig::Always,
         true,
@@ -38,8 +45,7 @@ fn op_parse(_interface: &mut dyn Interface, data: &[u8], _zero_copy: &mut [ZeroC
         Some(cm.clone()),
     ));
     let c = Compiler::new(cm.clone(), handler);
-    let src = "console.log('hi');";
-    let fm = c.cm.new_source_file(FileName::Anon, src.to_string());
+    let fm = c.cm.new_source_file(FileName::Anon, params.src.to_string());
     let options = ParseOptions {
         comments: true,
         is_module: false,
