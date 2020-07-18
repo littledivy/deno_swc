@@ -1,7 +1,7 @@
 import {
-  compile as rs_compile
+  swc_parse
 } from "./swc_plugin/index.ts";
 
-export function compile(str: string) {
-  return rs_compile(str);
+export function parse(str: string) {
+  return swc_parse(str);
 }

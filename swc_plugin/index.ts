@@ -52,7 +52,8 @@ const core = Deno.core as {
 };
 
 const {
-  parse
+  parse,
+  parse_ts
 } = core.ops();
 
 const textDecoder = new TextDecoder();
@@ -63,4 +64,9 @@ export function swc_parse(opt: { src: string }) {
   return JSON.parse(textDecoder.decode(response));
 }
 
-console.log(swc_parse({ src: "import divy from 'asd';"}));
+export function swc_parse_ts(opt: { src: string }) {
+  const response = core.dispatch(parse_ts, textEncoder.encode(JSON.stringify(opt)));
+  return JSON.parse(textDecoder.decode(response));
+}
+
+console.log(swc_parse_ts({ src: "const speed: number = 1;"}));
