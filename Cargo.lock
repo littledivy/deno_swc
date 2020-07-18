@@ -196,9 +196,9 @@ dependencies = [
 
 [[package]]
 name = "deno_core"
-version = "0.47.1"
+version = "0.49.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "88bb710ac3916a30de1d3f03f0763c9c0ed5100473687f95ddb37df7de661d0c"
+checksum = "7dd484caae7e2e2109c37c01adeaee4d821c7460a594540508b1894b171758c0"
 dependencies = [
  "downcast-rs",
  "futures 0.3.5",
@@ -207,6 +207,7 @@ dependencies = [
  "log",
  "rusty_v8",
  "serde_json",
+ "smallvec 1.4.1",
  "url",
 ]
 
@@ -908,9 +909,9 @@ dependencies = [
 
 [[package]]
 name = "rusty_v8"
-version = "0.5.1"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "acb51793f34f267b197a6688c986ddcd7a60c94894d77702f1b4a3febf6e1eda"
+checksum = "da4dd2d680bf9812b3156b44f89fdd7b508c1369fbc69a14150972c6919c84d1"
 dependencies = [
  "bitflags",
  "cargo_gn",
