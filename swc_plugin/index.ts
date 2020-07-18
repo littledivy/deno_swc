@@ -1,4 +1,5 @@
 import { prepare } from "../deps.ts";
+import { ParseOptions } from "../types/options.ts";
 
 const filenameBase = "deno_swc";
 
@@ -59,12 +60,12 @@ const {
 const textDecoder = new TextDecoder();
 const textEncoder = new TextEncoder();
 
-export function swc_parse(opt: { src: string }) {
+export function swc_parse(opt: ParseOptions) {
   const response = core.dispatch(parse, textEncoder.encode(JSON.stringify(opt)));
   return JSON.parse(textDecoder.decode(response));
 }
 
-export function swc_parse_ts(opt: { src: string }) {
+export function swc_parse_ts(opt: ParseOptions) {
   const response = core.dispatch(parse_ts, textEncoder.encode(JSON.stringify(opt)));
   return JSON.parse(textDecoder.decode(response));
 }
