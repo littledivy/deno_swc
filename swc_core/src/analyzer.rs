@@ -80,6 +80,7 @@ pub fn analyze_dependencies(
 #[test]
 fn test_analyze_dependencies() {
     let source = r#"
+import * as spam from "./spam.ts";
 import { foo } from "./foo.ts";
 export { bar } from "./foo.ts";
 export * from "./bar.ts";
@@ -89,6 +90,7 @@ export * from "./bar.ts";
     assert_eq!(
         dependencies,
         vec![
+            "./spam.ts".to_string(),
             "./foo.ts".to_string(),
             "./foo.ts".to_string(),
             "./bar.ts".to_string(),

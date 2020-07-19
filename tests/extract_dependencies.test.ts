@@ -1,8 +1,8 @@
-import { getLocalDependencies } from "../swc_deno/get_local_dependencies.ts";
+import { extractDependencies } from "../swc_deno/extract_dependencies.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("getDependencies", () => {
-  const result = getLocalDependencies(
+  const result = extractDependencies(
     { src: `import * as B from "./b.ts"; console.log(B);`, dynamic: false },
   );
   assertEquals(result, [
@@ -11,7 +11,7 @@ Deno.test("getDependencies", () => {
 });
 
 Deno.test("getDependencies (dynamic imports)", () => {
-  const result = getLocalDependencies(
+  const result = extractDependencies(
     {
       src:
         `import * as B from "./b.ts"; await import("./a.ts"); console.log(B);`,

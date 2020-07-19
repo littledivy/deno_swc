@@ -11,7 +11,7 @@ use core::{analyzer, parser};
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("parse", op_parse);
     interface.register_op("parse_ts", op_parse_ts);
-    interface.register_op("analyze", op_deps_analyzer);
+    interface.register_op("extract_dependencies", ops_extract_dependencies);
 }
 
 #[derive(Deserialize)]
@@ -25,7 +25,7 @@ struct AnalyzerArguments {
     dynamic: bool,
 }
 
-fn op_deps_analyzer(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
+fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: AnalyzerArguments = serde_json::from_slice(&data).unwrap();
     let deps =
