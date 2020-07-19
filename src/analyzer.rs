@@ -1,7 +1,7 @@
+use crate::ast_parser::{AstParser, SwcDiagnosticBuffer};
 use swc_ecma_ast::{CallExpr, ExportAll, ImportDecl, NamedExport};
 use swc_ecma_visit::Node;
 use swc_ecma_visit::Visit;
-use crate::ast_parser::{SwcDiagnosticBuffer, AstParser};
 
 struct DependencyVisitor {
     dependencies: Vec<String>,

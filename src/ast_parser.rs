@@ -57,7 +57,6 @@ impl From<SwcErrorBuffer> for SwcDiagnosticBuffer {
     }
 }
 
-
 /// Low-level utility structure with common AST parsing functions.
 ///
 /// Allows to build more complicated parser by providing a callback
