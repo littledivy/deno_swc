@@ -7,7 +7,7 @@ Deno.test("parse (no error)", () => {
   });
   assertEquals(result, {
     type: "ok",
-    ast: {
+    value: {
       type: "Module",
       body: [
         {

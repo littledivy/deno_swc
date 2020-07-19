@@ -1,5 +1,5 @@
 import { prepare } from "../deps.ts";
-import { ParseOptions } from "../types/options.ts";
+import { ParseOptions, AnalyzeOptions } from "../types/options.ts";
 
 const filenameBase = "deno_swc";
 
@@ -58,6 +58,7 @@ const core = Deno.core as {
 const {
   parse,
   parse_ts,
+  extract_dependencies,
 } = core.ops();
 
 const textDecoder = new TextDecoder();
@@ -74,6 +75,14 @@ export function swc_parse(opt: ParseOptions) {
 export function swc_parse_ts(opt: ParseOptions) {
   const response = core.dispatch(
     parse_ts,
+    textEncoder.encode(JSON.stringify(opt)),
+  );
+  return JSON.parse(textDecoder.decode(response));
+}
+
+export function swc_extract_dependencies(opt: AnalyzeOptions) {
+  const response = core.dispatch(
+    extract_dependencies,
     textEncoder.encode(JSON.stringify(opt)),
   );
   return JSON.parse(textDecoder.decode(response));

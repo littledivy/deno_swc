@@ -1,3 +1,3 @@
 #!/bin/sh
 deno fmt
-cargo fmt
+cargo fmt --all

@@ -49,7 +49,7 @@ jobs:
           command: clippy
           args: -- -D warnings
 
-  test:
+  swc-deno-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -72,3 +72,28 @@ jobs:
         run: cargo +nightly build
       - name: Test
         run: ./tools/test.sh
+
+  swc-rust-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: denolib/setup-deno@master
+        with:
+          deno-version: v1.2.0 
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - name: Install nightly Rust
+        run: rustup install nightly
+      - name: Build swc_core
+        run: cargo +nightly build
+        working-directory: ./swc_core
+      - name: Test
+        run: cargo +nightly test 
+        working-directory: ./swc_core
