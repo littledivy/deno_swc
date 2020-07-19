@@ -7,11 +7,6 @@ use serde::Deserialize;
 
 use std::sync::Arc;
 
-use swc::common::{errors::Handler, FileName, FilePathMapping, SourceMap};
-use swc::config::ParseOptions;
-use swc::ecmascript::parser;
-use swc::Compiler;
-
 use core::{analyzer, parser};
 
 #[no_mangle]

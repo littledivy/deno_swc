@@ -159,6 +159,7 @@ dependencies = [
 name = "core"
 version = "0.0.1"
 dependencies = [
+ "anyhow",
  "swc",
  "swc_common 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "swc_ecma_ast 0.23.1 (registry+https://github.com/rust-lang/crates.io-index)",

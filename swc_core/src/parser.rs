@@ -15,7 +15,7 @@ fn create_compiler() -> Compiler {
     Compiler::new(cm, handler)
 }
 
-pub fn parse_js(src: String) {
+pub fn parse_js(src: String) -> swc::ecmascript::ast::Program {
     let c = create_compiler();
     let fm = c.cm.new_source_file(FileName::Anon, src);
     let options = ParseOptions {
@@ -24,7 +24,7 @@ pub fn parse_js(src: String) {
         syntax: parser::Syntax::default(),
         target: parser::JscTarget::default(),
     };
-    let program = c
+    c
         .run(|| {
             c.parse_js(
                 fm.clone(),
@@ -34,10 +34,10 @@ pub fn parse_js(src: String) {
                 options.comments,
             )
         })
-        .unwrap();
+        .unwrap()
 }
 
-fn parse_ts(src: String) {
+pub fn parse_ts(src: String) -> Result<swc::ecmascript::ast::Program, anyhow::Error> {
     let c = create_compiler();
     let fm =
         c.cm.new_source_file(FileName::Custom("test.ts".into()), src);
@@ -47,7 +47,7 @@ fn parse_ts(src: String) {
         syntax: parser::Syntax::Typescript(std::default::Default::default()),
         target: parser::JscTarget::default(),
     };
-    let program = c.run(|| {
+    c.run(|| {
         c.parse_js(
             fm.clone(),
             options.target,
@@ -55,5 +55,5 @@ fn parse_ts(src: String) {
             options.is_module,
             options.comments,
         )
-    });
+    })
 }
