@@ -1,8 +1,8 @@
+use std::sync::Arc;
 use swc::common::{errors::Handler, FileName, FilePathMapping, SourceMap};
 use swc::config::ParseOptions;
 use swc::ecmascript::parser;
 use swc::Compiler;
-use std::sync::Arc;
 
 fn create_compiler() -> Compiler {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
@@ -24,17 +24,16 @@ pub fn parse_js(src: String) -> swc::ecmascript::ast::Program {
         syntax: parser::Syntax::default(),
         target: parser::JscTarget::default(),
     };
-    c
-        .run(|| {
-            c.parse_js(
-                fm.clone(),
-                options.target,
-                options.syntax,
-                options.is_module,
-                options.comments,
-            )
-        })
-        .unwrap()
+    c.run(|| {
+        c.parse_js(
+            fm.clone(),
+            options.target,
+            options.syntax,
+            options.is_module,
+            options.comments,
+        )
+    })
+    .unwrap()
 }
 
 pub fn parse_ts(src: String) -> Result<swc::ecmascript::ast::Program, anyhow::Error> {
