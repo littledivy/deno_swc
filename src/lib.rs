@@ -7,10 +7,11 @@ use serde::Deserialize;
 
 use std::sync::Arc;
 
-use swc::common::{self, errors::Handler, FileName, FilePathMapping, SourceMap};
+use swc::common::{errors::Handler, FileName, FilePathMapping, SourceMap};
 use swc::config::ParseOptions;
 use swc::ecmascript::parser;
 use swc::Compiler;
+
 mod analyzer;
 mod ast_parser;
 
@@ -18,11 +19,18 @@ mod ast_parser;
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("parse", op_parse);
     interface.register_op("parse_ts", op_parse_ts);
+    interface.register_op("analyze", op_deps_analyzer);
 }
 
 #[derive(Deserialize)]
 struct ParseArguments {
     src: String,
+}
+
+#[derive(Deserialize)]
+struct AnalyzerArguments {
+    src: String,
+    dynamic: bool,
 }
 
 fn create_compiler() -> Compiler {
@@ -34,6 +42,15 @@ fn create_compiler() -> Compiler {
         Some(cm.clone()),
     ));
     Compiler::new(cm, handler)
+}
+
+fn op_deps_analyzer(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
+    let data = &zero_copy[0][..];
+    let params: AnalyzerArguments = serde_json::from_slice(&data).unwrap();
+    let deps = analyzer::analyze_dependencies(&params.src, params.dynamic).expect("Failed to parse");
+    let result = serde_json::to_string(&deps).expect("failed to serialize Deps");
+    let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+    Op::Sync(result_box)
 }
 
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {

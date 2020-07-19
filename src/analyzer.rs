@@ -134,10 +134,12 @@ impl AstParser {
         })
     }
 
+    #[allow(dead_code)]
     pub fn get_span_location(&self, span: Span) -> swc_common::Loc {
         self.source_map.lookup_char_pos(span.lo())
     }
 
+    #[allow(dead_code)]
     pub fn get_span_comments(&self, span: Span) -> Vec<swc_common::comments::Comment> {
         self.comments
             .take_leading_comments(span.lo())
