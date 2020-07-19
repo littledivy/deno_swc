@@ -4,5 +4,5 @@ export interface ParseOptions {
 
 export interface AnalyzeOptions {
   src: string;
-  dynamic: bool;
+  dynamic: boolean;
 }
