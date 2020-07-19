@@ -12,6 +12,9 @@ use swc::{
     Compiler,
 };
 
+mod analyzer;
+mod ast_parser;
+
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("parse", op_parse);
