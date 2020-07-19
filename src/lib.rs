@@ -12,7 +12,7 @@ use swc::config::ParseOptions;
 use swc::ecmascript::parser;
 use swc::Compiler;
 
-use core::analyzer;
+use core::{analyzer, parser};
 
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
@@ -32,17 +32,6 @@ struct AnalyzerArguments {
     dynamic: bool,
 }
 
-fn create_compiler() -> Compiler {
-    let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
-    let handler = Arc::new(Handler::with_tty_emitter(
-        swc::common::errors::ColorConfig::Always,
-        true,
-        false,
-        Some(cm.clone()),
-    ));
-    Compiler::new(cm, handler)
-}
-
 fn op_deps_analyzer(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: AnalyzerArguments = serde_json::from_slice(&data).unwrap();
@@ -56,25 +45,7 @@ fn op_deps_analyzer(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    let c = create_compiler();
-    let fm = c.cm.new_source_file(FileName::Anon, params.src);
-    let options = ParseOptions {
-        comments: true,
-        is_module: false,
-        syntax: parser::Syntax::default(),
-        target: parser::JscTarget::default(),
-    };
-    let program = c
-        .run(|| {
-            c.parse_js(
-                fm.clone(),
-                options.target,
-                options.syntax,
-                options.is_module,
-                options.comments,
-            )
-        })
-        .unwrap();
+    let program = parser::parse_js(params.src);
     let result = serde_json::to_string(&program).expect("failed to serialize Program");
     let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
     Op::Sync(result_box)
@@ -83,24 +54,7 @@ fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
 fn op_parse_ts(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    let c = create_compiler();
-    let fm =
-        c.cm.new_source_file(FileName::Custom("test.ts".into()), params.src);
-    let options = ParseOptions {
-        comments: true,
-        is_module: true,
-        syntax: parser::Syntax::Typescript(std::default::Default::default()),
-        target: parser::JscTarget::default(),
-    };
-    let program = c.run(|| {
-        c.parse_js(
-            fm.clone(),
-            options.target,
-            options.syntax,
-            options.is_module,
-            options.comments,
-        )
-    });
+    let program = parser::parse_ts(params.src);
     let result = match program {
         Ok(ast) => serde_json::to_string(&ast).expect("failed to serialize Program"),
         Err(message) => {
