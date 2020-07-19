@@ -6,12 +6,11 @@ use deno_core::plugin_api::ZeroCopyBuf;
 use serde::Deserialize;
 
 use std::sync::Arc;
-use swc::{
-    common::{self, errors::Handler, FileName, FilePathMapping, SourceMap},
-    config::ParseOptions,
-    Compiler,
-};
 
+use swc::common::{self, errors::Handler, FileName, FilePathMapping, SourceMap};
+use swc::config::ParseOptions;
+use swc::ecmascript::parser;
+use swc::Compiler;
 mod analyzer;
 mod ast_parser;
 
@@ -26,23 +25,27 @@ struct ParseArguments {
     src: String,
 }
 
-fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
-    let data = &zero_copy[0][..];
+fn create_compiler() -> Compiler {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
-    let params: ParseArguments = serde_json::from_slice(&data).unwrap();
     let handler = Arc::new(Handler::with_tty_emitter(
-        common::errors::ColorConfig::Always,
+        swc::common::errors::ColorConfig::Always,
         true,
         false,
         Some(cm.clone()),
     ));
-    let c = Compiler::new(cm, handler);
+    Compiler::new(cm, handler)
+}
+
+fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
+    let data = &zero_copy[0][..];
+    let params: ParseArguments = serde_json::from_slice(&data).unwrap();
+    let c = create_compiler();
     let fm = c.cm.new_source_file(FileName::Anon, params.src);
     let options = ParseOptions {
         comments: true,
         is_module: false,
-        syntax: swc::ecmascript::parser::Syntax::default(),
-        target: swc::ecmascript::parser::JscTarget::default(),
+        syntax: parser::Syntax::default(),
+        target: parser::JscTarget::default(),
     };
     let program = c
         .run(|| {
@@ -62,22 +65,15 @@ fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
 
 fn op_parse_ts(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
-    let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    let handler = Arc::new(Handler::with_tty_emitter(
-        common::errors::ColorConfig::Always,
-        true,
-        false,
-        Some(cm.clone()),
-    ));
-    let c = Compiler::new(cm, handler);
+    let c = create_compiler();
     let fm =
         c.cm.new_source_file(FileName::Custom("test.ts".into()), params.src);
     let options = ParseOptions {
         comments: true,
         is_module: true,
-        syntax: swc::ecmascript::parser::Syntax::Typescript(std::default::Default::default()),
-        target: swc::ecmascript::parser::JscTarget::default(),
+        syntax: parser::Syntax::Typescript(std::default::Default::default()),
+        target: parser::JscTarget::default(),
     };
     let program = c.run(|| {
         c.parse_js(
