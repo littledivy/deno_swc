@@ -34,13 +34,13 @@ Deno.test("getDependencies (circular imports)", () => {
 });
 
 Deno.test("getDependencies (import from remote)", () => {
-  throw new Error(`Unspecified yet`)
+  throw new Error(`Unspecified yet`);
 });
 
 Deno.test("getDependencies (import map)", () => {
-  throw new Error(`Unspecified yet`)
+  throw new Error(`Unspecified yet`);
 });
 
 Deno.test("getDependencies (real world example: oak)", () => {
-  throw new Error(`Unspecified yet`)
+  throw new Error(`Unspecified yet`);
 });
