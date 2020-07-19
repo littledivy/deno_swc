@@ -240,3 +240,46 @@ pub fn analyze_dependencies(
     Ok(collector.dependencies)
   })
 }
+
+#[test]
+fn test_analyze_dependencies() {
+  let source = r#"
+import { foo } from "./foo.ts";
+export { bar } from "./foo.ts";
+export * from "./bar.ts";
+"#;
+
+  let dependencies =
+    analyze_dependencies(source, false).expect("Failed to parse");
+  assert_eq!(
+    dependencies,
+    vec![
+      "./foo.ts".to_string(),
+      "./foo.ts".to_string(),
+      "./bar.ts".to_string(),
+    ]
+  );
+}
+
+#[test]
+fn test_analyze_dependencies_dyn_imports() {
+  let source = r#"
+import { foo } from "./foo.ts";
+export { bar } from "./foo.ts";
+export * from "./bar.ts";
+const a = await import("./fizz.ts");
+const a = await import("./" + "buzz.ts");
+"#;
+
+  let dependencies =
+    analyze_dependencies(source, true).expect("Failed to parse");
+  assert_eq!(
+    dependencies,
+    vec![
+      "./foo.ts".to_string(),
+      "./foo.ts".to_string(),
+      "./bar.ts".to_string(),
+      "./fizz.ts".to_string(),
+    ]
+  );
+}
