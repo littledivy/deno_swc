@@ -5,8 +5,6 @@ use deno_core::plugin_api::ZeroCopyBuf;
 
 use serde::Deserialize;
 
-use std::sync::Arc;
-
 use core::{analyzer, parser};
 
 #[no_mangle]
