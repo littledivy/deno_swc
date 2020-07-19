@@ -7,7 +7,7 @@ use swc_common::{
     self,
     comments::Comments,
     errors::{Diagnostic, DiagnosticBuilder, Handler, HandlerFlags},
-    FileName, Globals, SourceMap, Span,
+    FileName, Globals, SourceMap,
 };
 use swc_ecma_parser::{
     lexer::Lexer, JscTarget, Parser, Session, SourceFileInput, Syntax, TsConfig,
