@@ -12,8 +12,7 @@ use swc::config::ParseOptions;
 use swc::ecmascript::parser;
 use swc::Compiler;
 
-mod analyzer;
-mod ast_parser;
+use core::analyzer;
 
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {

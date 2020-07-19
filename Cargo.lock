@@ -156,6 +156,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "core"
+version = "0.0.1"
+dependencies = [
+ "swc",
+ "swc_common 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_ecma_ast 0.23.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_ecma_parser 0.27.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "swc_ecma_visit",
+]
+
+[[package]]
 name = "darling"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -205,6 +216,7 @@ dependencies = [
 name = "deno-swc"
 version = "0.0.1"
 dependencies = [
+ "core",
  "deno_core",
  "futures 0.3.5",
  "serde",
