@@ -25,14 +25,23 @@ struct AnalyzerArguments {
     dynamic: bool,
 }
 
+#[allow(clippy::needless_return)]
 fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: AnalyzerArguments = serde_json::from_slice(&data).unwrap();
-    let deps =
-        analyzer::analyze_dependencies(&params.src, params.dynamic).expect("Failed to parse");
-    let result = serde_json::to_string(&deps).expect("failed to serialize Deps");
-    let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
-    Op::Sync(result_box)
+    return match analyzer::analyze_dependencies(&params.src, params.dynamic) {
+        Ok(deps) => {
+            let result = serde_json::to_string(&deps).expect("failed to serialize Deps");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+        Err(_) => {
+            //TODO: return actual error message instead of "parse_error"
+            let result = serde_json::to_string("parse_error").expect("failed to serialize Deps");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+    };
 }
 
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
