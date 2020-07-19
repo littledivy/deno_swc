@@ -58,7 +58,7 @@ const core = Deno.core as {
 const {
   parse,
   parse_ts,
-  analyze,
+  extract_dependencies,
 } = core.ops();
 
 const textDecoder = new TextDecoder();
@@ -80,9 +80,9 @@ export function swc_parse_ts(opt: ParseOptions) {
   return JSON.parse(textDecoder.decode(response));
 }
 
-export function swc_analyze(opt: AnalyzeOptions) {
+export function swc_extract_dependencies(opt: AnalyzeOptions) {
   const response = core.dispatch(
-    analyze,
+    extract_dependencies,
     textEncoder.encode(JSON.stringify(opt)),
   );
   return JSON.parse(textDecoder.decode(response));
