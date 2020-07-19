@@ -9,16 +9,19 @@ const PLUGIN_URL_BASE =
 const isDev = Deno.env.get("DEV");
 
 if (isDev) {
-  let filenameSuffix = ".so";
-  let filenamePrefix = "lib";
-
-  if (Deno.build.os === "windows") {
-    filenameSuffix = ".dll";
-    filenamePrefix = "";
-  }
-  if (Deno.build.os === "darwin") {
-    filenameSuffix = ".dylib";
-  }
+  const { filenamePrefix, filenameSuffix } = (() => {
+    switch (Deno.build.os) {
+      case "darwin": {
+        return { filenamePrefix: "lib", filenameSuffix: ".dylib" };
+      }
+      case "linux": {
+        return { filenamePrefix: "lib", filenameSuffix: ".so" };
+      }
+      case "windows": {
+        return { filenamePrefix: "", filenameSuffix: ".dll" };
+      }
+    }
+  })();
 
   const filename =
     `./target/debug/${filenamePrefix}${filenameBase}${filenameSuffix}`;
@@ -54,20 +57,24 @@ const core = Deno.core as {
 
 const {
   parse,
-  parse_ts
+  parse_ts,
 } = core.ops();
 
 const textDecoder = new TextDecoder();
 const textEncoder = new TextEncoder();
 
 export function swc_parse(opt: ParseOptions) {
-  const response = core.dispatch(parse, textEncoder.encode(JSON.stringify(opt)));
+  const response = core.dispatch(
+    parse,
+    textEncoder.encode(JSON.stringify(opt)),
+  );
   return JSON.parse(textDecoder.decode(response));
 }
 
 export function swc_parse_ts(opt: ParseOptions) {
-  const response = core.dispatch(parse_ts, textEncoder.encode(JSON.stringify(opt)));
+  const response = core.dispatch(
+    parse_ts,
+    textEncoder.encode(JSON.stringify(opt)),
+  );
   return JSON.parse(textDecoder.decode(response));
 }
-
-console.log(swc_parse_ts({ src: "const speed: number = 1;"}));
