@@ -80,7 +80,7 @@ export function swc_parse_ts(opt: ParseOptions) {
   return JSON.parse(textDecoder.decode(response));
 }
 
-export function swc_analyze(opt: AnalyzeOptions): string[] {
+export function swc_analyze(opt: AnalyzeOptions) {
   const response = core.dispatch(
     analyze,
     textEncoder.encode(JSON.stringify(opt)),

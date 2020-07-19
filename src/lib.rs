@@ -47,7 +47,8 @@ fn create_compiler() -> Compiler {
 fn op_deps_analyzer(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: AnalyzerArguments = serde_json::from_slice(&data).unwrap();
-    let deps = analyzer::analyze_dependencies(&params.src, params.dynamic).expect("Failed to parse");
+    let deps =
+        analyzer::analyze_dependencies(&params.src, params.dynamic).expect("Failed to parse");
     let result = serde_json::to_string(&deps).expect("failed to serialize Deps");
     let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
     Op::Sync(result_box)

@@ -8,5 +8,5 @@ import { AnalyzeOptions } from "../types/options.ts";
  * Get the local dependencies of a Typescript/Javascript file, excluding remote dependencies.
  */
 export const getLocalDependencies = (opt: AnalyzeOptions): string[] => {
-  return swc_analyze(opt);
+  return JSON.parse(swc_analyze(opt));
 };
