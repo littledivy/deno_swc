@@ -17,7 +17,7 @@ pub fn print(program_data: String) -> Result<TransformOutput, Error> {
         false,
         Some(cm.clone()),
     ));
-    let c = Arc::new(Compiler::new(cm.clone(), handler));
+    let c = Arc::new(Compiler::new(cm, handler));
     c.run(|| {
         c.print(
             &program,
