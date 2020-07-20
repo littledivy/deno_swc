@@ -29,7 +29,7 @@ struct AnalyzerArguments {
 fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: AnalyzerArguments = serde_json::from_slice(&data).unwrap();
-    return match analyzer::analyze_dependencies(&params.src, params.dynamic) {
+    match analyzer::analyze_dependencies(&params.src, params.dynamic) {
         Ok(deps) => {
             let result = serde_json::to_string(&deps).expect("failed to serialize Deps");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
@@ -41,7 +41,7 @@ fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [Zer
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
-    };
+    }
 }
 
 fn op_print(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
@@ -65,7 +65,7 @@ fn op_print(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    return match parser::parse(params.src) {
+    match parser::parse(params.src) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Program");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
@@ -77,5 +77,5 @@ fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
-    };
+    }
 }
