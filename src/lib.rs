@@ -53,9 +53,10 @@ fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
             Op::Sync(result_box)
         }
         Err(e) => {
-            let result = serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
+            let result =
+                serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
-    }
+    };
 }
