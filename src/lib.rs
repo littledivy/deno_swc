@@ -10,6 +10,7 @@ use core::{analyzer, parser, printer};
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("parse", op_parse);
+    interface.register_op("print", op_print);
     interface.register_op("extract_dependencies", ops_extract_dependencies);
 }
 
