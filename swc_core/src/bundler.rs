@@ -17,7 +17,7 @@ use swc::{
 };
 pub fn bundle(data: &[u8]) -> Result<Vec<spack::Bundle>, Error> {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
-    let params = serde_json::from_slice(&data).unwrap();
+    let params: serde_json::Value = serde_json::from_slice(&data).unwrap();
     let handler = Arc::new(Handler::with_tty_emitter(
         common::errors::ColorConfig::Always,
         true,
@@ -30,11 +30,11 @@ pub fn bundle(data: &[u8]) -> Result<Vec<spack::Bundle>, Error> {
                 c.clone(),
                 serde_json::from_value(serde_json::Value::Object(Default::default()))
                     .unwrap(),
-                &(&box NodeResolver as Box<_>),
+                &(box NodeResolver as Box<_>),
                 &loaders::swc::SwcLoader::new(c.clone(), Default::default()),
             );
 
-            let result = bundler.bundle(&spack::config::Config {
+            let result = &bundler.bundle(&spack::config::Config {
                 working_dir: std::path::PathBuf::from("./"),
                 mode: spack::config::Mode::Production,
                 module: spack::config::ModuleConfig { },
