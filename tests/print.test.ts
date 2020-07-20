@@ -42,5 +42,5 @@ Deno.test("print (no error)", () => {
       interpreter: null,
       span: { ctxt: 0, end: 20, start: 0 },
   });
-  assertEquals(result, { code: "const x: number = 2;" });
+  assertEquals(result.code.trim(), "const x: number = 2;");
 });
