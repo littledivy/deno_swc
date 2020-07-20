@@ -1,6 +1,5 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Test
+# Development CI workflow
+name: dev-ci
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -71,7 +70,7 @@ jobs:
       - name: Build swc
         run: cargo +nightly build
       - name: Test
-        run: ./tools/test.sh
+        run: ./tools/dev-test.sh
 
   swc-rust-test:
     runs-on: ubuntu-latest
