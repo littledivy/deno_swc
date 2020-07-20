@@ -46,8 +46,16 @@ fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [Zer
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    let program = parser::parse(params.src).map_err(|e| { e.to_string() });
-    let result = serde_json::to_string(&program).expect("failed to serialize Program");
-    let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
-    Op::Sync(result_box)
+    return match parser::parse(params.src) {
+        Ok(program) => {
+            let result = serde_json::to_string(&program).expect("failed to serialize Program");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+        Err(e) => {
+            let result = serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+    }
 }
