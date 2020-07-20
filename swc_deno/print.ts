@@ -4,7 +4,7 @@ import {
 
 export function print(
   opt: object,
-): string {
+): { code: string } {
   const result = JSON.parse(swc_print(opt));
   return result;
 }
