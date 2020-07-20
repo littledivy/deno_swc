@@ -1,14 +1,11 @@
-use std::{
-    sync::Arc,
-};
 use anyhow::Error;
+use std::sync::Arc;
 use swc::{
     common::{self, errors::Handler, FilePathMapping, SourceMap},
-    config::{SourceMapsConfig},
+    config::SourceMapsConfig,
     ecmascript::ast::Program,
     Compiler, TransformOutput,
 };
-
 
 pub fn print(program_data: String) -> Result<TransformOutput, Error> {
     let program: Program =
@@ -22,12 +19,11 @@ pub fn print(program_data: String) -> Result<TransformOutput, Error> {
     ));
     let c = Arc::new(Compiler::new(cm.clone(), handler));
     c.run(|| {
-            c.print(
-                &program,
-                SourceMapsConfig::Bool(false),
-                None,
-                false, // minify: false
-            )
+        c.print(
+            &program,
+            SourceMapsConfig::Bool(false),
+            None,
+            false, // minify: false
+        )
     })
-
 }
