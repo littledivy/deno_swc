@@ -57,24 +57,15 @@ const core = Deno.core as {
 
 const {
   parse,
-  parse_ts,
   extract_dependencies,
 } = core.ops();
 
 const textDecoder = new TextDecoder();
 const textEncoder = new TextEncoder();
 
-export function swc_parse(opt: ParseOptions) {
-  const response = core.dispatch(
-    parse,
-    textEncoder.encode(JSON.stringify(opt)),
-  );
-  return JSON.parse(textDecoder.decode(response));
-}
-
 export function swc_parse_ts(opt: ParseOptions) {
   const response = core.dispatch(
-    parse_ts,
+    parse,
     textEncoder.encode(JSON.stringify(opt)),
   );
   return JSON.parse(textDecoder.decode(response));

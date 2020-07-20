@@ -52,5 +52,5 @@ Deno.test("parse (no error)", () => {
 
 Deno.test("parse (with errors)", () => {
   const result = parseTypescript({ src: "x = 3 3" });
-  assertEquals(result, { type: "error", error: "failed to parse module" });
+  assertEquals(result, { type: "error", error: "" });
 });

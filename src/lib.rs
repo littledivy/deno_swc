@@ -10,7 +10,6 @@ use core::{analyzer, parser};
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("parse", op_parse);
-    interface.register_op("parse_ts", op_parse_ts);
     interface.register_op("extract_dependencies", ops_extract_dependencies);
 }
 
@@ -47,22 +46,17 @@ fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [Zer
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    let program = parser::parse_js(params.src);
-    let result = serde_json::to_string(&program).expect("failed to serialize Program");
-    let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
-    Op::Sync(result_box)
-}
-
-fn op_parse_ts(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
-    let data = &zero_copy[0][..];
-    let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    let program = parser::parse_ts(params.src);
-    let result = match program {
-        Ok(ast) => serde_json::to_string(&ast).expect("failed to serialize Program"),
-        Err(message) => {
-            serde_json::to_string(&message.to_string()).expect("failed to serialize Program")
+    return match parser::parse(params.src) {
+        Ok(program) => {
+            let result = serde_json::to_string(&program).expect("failed to serialize Program");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+        Err(e) => {
+            let result =
+                serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
         }
     };
-    let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
-    Op::Sync(result_box)
 }
