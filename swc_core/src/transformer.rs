@@ -4,7 +4,7 @@ use swc::{
     common::{self, errors::Handler, FilePathMapping, SourceMap, FileName},
     Compiler, TransformOutput,
     config::{Config, Options, JscConfig},
-    ecmascript::parser::{Syntax, TsConfig}
+    ecmascript::parser::{Syntax, TsConfig, EsConfig, JscTarget}
 };
 
 pub fn transform(program_data: String) -> Result<TransformOutput, Error> {
@@ -21,10 +21,11 @@ pub fn transform(program_data: String) -> Result<TransformOutput, Error> {
         c.process_js_file(scf, &Options {
                 config: Some(Config {
                     jsc: JscConfig {
-                        syntax: Some(Syntax::Typescript(TsConfig {
-                                tsx: true,
-                                ..Default::default()
+                        syntax: Some(Syntax::Es(EsConfig {
+                            import_meta: true,
+                            ..Default::default()
                         })),
+                        target: JscTarget::Es3 ,
                         ..Default::default()
                     },
                     ..Default::default()
