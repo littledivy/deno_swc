@@ -74,7 +74,7 @@ export function swc_print(opt: object) {
   return JSON.parse(textDecoder.decode(response));
 }
 
-export function swc_parse_ts(opt: ParseOptions) {
+export function swc_parse_ts(opt: { src: string, opt?: ParseOptions }) {
   const response = core.dispatch(
     parse,
     textEncoder.encode(JSON.stringify(opt)),

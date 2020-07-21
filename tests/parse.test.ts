@@ -2,9 +2,7 @@ import { parseTypescript } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("parse (no error)", () => {
-  const result = parseTypescript({
-    src: "const x: number = 2;",
-  });
+  const result = parseTypescript("const x: number = 2;");
   assertEquals(result, {
     type: "ok",
     value: {
@@ -51,6 +49,6 @@ Deno.test("parse (no error)", () => {
 });
 
 Deno.test("parse (with errors)", () => {
-  const result = parseTypescript({ src: "x = 3 3" });
+  const result = parseTypescript("x = 3 3");
   assertEquals(result, { type: "error", error: "" });
 });

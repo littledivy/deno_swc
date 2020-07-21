@@ -9,10 +9,10 @@ type ParseResult =
   | { type: "error"; error: string };
 
 export function parseTypescript(
-  code: string,
+  src: string,
   opt?: ParseOptions,
 ): Result<{ ok: Record<string, string>; error: string }> {
-  const result = JSON.parse(swc_parse_ts({ code, opt }));
+  const result = JSON.parse(swc_parse_ts({ src, opt }));
   if (typeof result === "string") {
     return {
       type: "error",
