@@ -60,6 +60,7 @@ const {
   parse,
   extract_dependencies,
   print,
+  transform,
 } = core.ops();
 
 const textDecoder = new TextDecoder();
@@ -85,6 +86,14 @@ export function swc_extract_dependencies(opt: AnalyzeOptions) {
   const response = core.dispatch(
     extract_dependencies,
     textEncoder.encode(JSON.stringify(opt)),
+  );
+  return JSON.parse(textDecoder.decode(response));
+}
+
+export function swc_transform(src: string) {
+  const response = core.dispatch(
+    transform,
+    textEncoder.encode(JSON.stringify(src)),
   );
   return JSON.parse(textDecoder.decode(response));
 }
