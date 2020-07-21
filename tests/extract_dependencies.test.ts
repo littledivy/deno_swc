@@ -1,9 +1,6 @@
+import { extractDependencies } from "../swc_deno/extract_dependencies.ts";
 import { assertEquals } from "./deps.ts";
-import { DenoSWC } from "../mod.ts";
 
-const { extractDependencies } = await DenoSWC(
-  { pluginVersion: "DANGEROUSLY_USE_LATEST" },
-);
 Deno.test("getDependencies", () => {
   const result = extractDependencies(
     { src: `import * as B from "./b.ts"; console.log(B);`, dynamic: false },
