@@ -84,8 +84,7 @@ jobs:
         # give this job an ID
         id: v
         # set output for this job
-        run: VERSION=`deno run ./tools/print-version.ts --quiet`
-             echo ::set-output name=version::$VERSION
+        run: deno run ./tools/print-version.ts --quiet
 
       - name: Release Plugin
         uses: softprops/action-gh-release@master

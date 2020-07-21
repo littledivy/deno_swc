@@ -1,2 +1,2 @@
 import { version } from "../version.ts";
-console.log(version);
+console.log(`echo ::set-output name=version::${version}`);
