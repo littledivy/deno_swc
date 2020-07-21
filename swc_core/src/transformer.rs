@@ -3,6 +3,8 @@ use std::sync::Arc;
 use swc::{
     common::{self, errors::Handler, FilePathMapping, SourceMap, FileName},
     Compiler, TransformOutput,
+    config::{Config, Options, JscConfig},
+    ecmascript::parser::{Syntax, TsConfig}
 };
 
 pub fn transform(program_data: String) -> Result<TransformOutput, Error> {
@@ -16,6 +18,18 @@ pub fn transform(program_data: String) -> Result<TransformOutput, Error> {
     let c = Arc::new(Compiler::new(cm, handler));
     c.run(|| {
         let scf = c.cm.new_source_file(FileName::Anon, program_data);
-        c.process_js_file(scf, &Default::default())
+        c.process_js_file(scf, &Options {
+                config: Some(Config {
+                    jsc: JscConfig {
+                        syntax: Some(Syntax::Typescript(TsConfig {
+                                tsx: true,
+                                ..Default::default()
+                        })),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                }),
+            ..Default::default()
+        })
     })
 }
