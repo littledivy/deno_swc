@@ -1,6 +1,9 @@
-import { parseTypescript } from "../mod.ts";
-import { assertEquals } from "./deps.ts";
+import { DenoSWC } from "../mod.ts";
+import { assertEquals, getLatestReleaseTag } from "./deps.ts";
 
+const { parseTypescript } = await DenoSWC(
+  { pluginVersion: await getLatestReleaseTag() },
+);
 Deno.test("parse (no error)", () => {
   const result = parseTypescript({
     src: "const x: number = 2;",

@@ -1,6 +1,9 @@
-import { assertEquals } from "./deps.ts";
-import { extractDependencies } from "../mod.ts";
+import { assertEquals, getLatestReleaseTag } from "./deps.ts";
+import { DenoSWC } from "../mod.ts";
 
+const { extractDependencies } = await DenoSWC(
+  { pluginVersion: await getLatestReleaseTag() },
+);
 Deno.test("getDependencies", () => {
   const result = extractDependencies(
     { src: `import * as B from "./b.ts"; console.log(B);`, dynamic: false },

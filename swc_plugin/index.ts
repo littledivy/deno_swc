@@ -8,9 +8,12 @@ const PLUGIN_URL_BASE =
 
 const isDev = Deno.env.get("DEV");
 
-export const initPlugin = async (
-  { importMetaUrl }: { importMetaUrl: string },
-) => {
+export const initPlugin = async ({ releaseTag }: { releaseTag: string }) => {
+  throw new Error(`
+    TODO:
+    (1) Validate that the release tag is an existing tag
+    (2) Retrieve corresponding asset URL based on releaseTag
+  `);
   if (isDev) {
     const { filenamePrefix, filenameSuffix } = (() => {
       switch (Deno.build.os) {
@@ -35,28 +38,14 @@ export const initPlugin = async (
 
     const rid = Deno.openPlugin(filename);
   } else {
-    const tagName = (() => {
-      const version = importMetaUrl.match(/v\d[.]\d[.]\d/gi);
-      if (!version) {
-        throw new Error(`Please specify a version when importing DenoSWC.`);
-      } else {
-        return version[0];
-      }
-    })();
-    throw new Error(`
-      TODO:
-      (1) Validate that the release tag is an existing tag
-      (2) Retrieve corresponding asset URL based on releaseTag
-    `);
-    const releaseId = "unknown";
     const pluginId = await prepare({
       name: "deno_swc",
       printLog: true,
       checkCache: Boolean(Deno.env.get("CACHE")) || true,
       urls: {
-        darwin: `${PLUGIN_URL_BASE}/${releaseId}/lib${filenameBase}.dylib`,
-        windows: `${PLUGIN_URL_BASE}/${releaseId}/${filenameBase}.dll`,
-        linux: `${PLUGIN_URL_BASE}/${releaseId}/lib${filenameBase}.so`,
+        darwin: `${PLUGIN_URL_BASE}/${releaseTag}/lib${filenameBase}.dylib`,
+        windows: `${PLUGIN_URL_BASE}/${releaseTag}/${filenameBase}.dll`,
+        linux: `${PLUGIN_URL_BASE}/${releaseTag}/lib${filenameBase}.so`,
       },
     });
   }
