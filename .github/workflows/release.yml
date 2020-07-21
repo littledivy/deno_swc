@@ -80,19 +80,13 @@ jobs:
           RUST_BACKTRACE: 1
         run: cargo +nightly build --release
 
-      - name: Get version
-        # give this job an ID
-        id: v
-        # set output for this job
-        run: deno run ./tools/print-version.ts --quiet
-
       - name: Release Plugin
         uses: softprops/action-gh-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # use the version job ID to get the output
-          tag_name: ${{ steps.v.outputs.version }}
+          tag_name: $(echo `deno run ./tools/print-version.ts --quiet`)
           files: |
             target/release/libdeno_swc.dylib
             target/release/deno_swc.dll
