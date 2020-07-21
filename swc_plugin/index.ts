@@ -5,7 +5,7 @@ import { version } from "../version.ts";
 const filenameBase = "deno_swc";
 
 const PLUGIN_URL_BASE =
-  `https://github.com/divy-work/deno_swc/releases/v${version}/download`;
+  `https://github.com/divy-work/deno_swc/releases/${version}/download`;
 
 const isDev = Deno.env.get("DEV");
 
