@@ -1,3 +1,4 @@
+use crate::options::ParseOptions;
 use std::error::Error;
 use std::fmt;
 use std::sync::Arc;
@@ -9,9 +10,7 @@ use swc_common::{
     errors::{Diagnostic, DiagnosticBuilder, Handler, HandlerFlags},
     FileName, Globals, SourceMap,
 };
-use swc_ecma_parser::{
-    lexer::Lexer, JscTarget, Parser, Session, SourceFileInput, Syntax, TsConfig,
-};
+use swc_ecma_parser::{lexer::Lexer, Parser, Session, SourceFileInput, Syntax, TsConfig};
 
 #[derive(Clone, Debug)]
 pub struct SwcDiagnosticBuffer {
@@ -91,7 +90,13 @@ impl AstParser {
         }
     }
 
-    pub fn parse_module<F, R>(&self, file_name: &str, source_code: &str, callback: F) -> R
+    pub fn parse_module<F, R>(
+        &self,
+        file_name: &str,
+        source_code: &str,
+        opt: ParseOptions,
+        callback: F,
+    ) -> R
     where
         F: FnOnce(Result<swc_ecma_ast::Module, SwcDiagnosticBuffer>) -> R,
     {
@@ -113,9 +118,13 @@ impl AstParser {
             let lexer = Lexer::new(
                 session,
                 syntax,
-                JscTarget::Es2019,
+                opt.target,
                 SourceFileInput::from(&*swc_source_file),
-                Some(&self.comments),
+                if opt.comments {
+                    Some(&self.comments)
+                } else {
+                    None
+                },
             );
 
             let mut parser = Parser::new_from(session, lexer);
@@ -126,7 +135,6 @@ impl AstParser {
                     err.cancel();
                     SwcDiagnosticBuffer::from(buffered_err)
                 });
-
             callback(parse_result)
         })
     }
