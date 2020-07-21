@@ -1,5 +1,8 @@
 use crate::ast_parser::{AstParser, SwcDiagnosticBuffer};
+use crate::options::ParseOptions;
 use swc_ecma_ast::{CallExpr, ExportAll, ImportDecl, NamedExport};
+use swc_ecma_parser::Syntax;
+use swc_ecma_parser::TsConfig;
 use swc_ecma_visit::Node;
 use swc_ecma_visit::Visit;
 
@@ -59,15 +62,28 @@ pub fn analyze_dependencies(
     analyze_dynamic_imports: bool,
 ) -> Result<Vec<String>, SwcDiagnosticBuffer> {
     let parser = AstParser::new();
-    parser.parse_module("root.ts", source_code, |parse_result| {
-        let module = parse_result?;
-        let mut collector = DependencyVisitor {
-            dependencies: vec![],
-            analyze_dynamic_imports,
-        };
-        collector.visit_module(&module, &module);
-        Ok(collector.dependencies)
-    })
+    let mut ts_config = TsConfig::default();
+    ts_config.dynamic_import = true;
+    let syntax = Syntax::Typescript(ts_config);
+    parser.parse_module(
+        "root.ts",
+        source_code,
+        ParseOptions {
+            target: swc_ecma_parser::JscTarget::Es2019,
+            comments: true,
+            is_module: true,
+            syntax,
+        },
+        |parse_result| {
+            let module = parse_result?;
+            let mut collector = DependencyVisitor {
+                dependencies: vec![],
+                analyze_dynamic_imports,
+            };
+            collector.visit_module(&module, &module);
+            Ok(collector.dependencies)
+        },
+    )
 }
 
 #[test]

@@ -3,9 +3,14 @@ use deno_core::plugin_api::Interface;
 use deno_core::plugin_api::Op;
 use deno_core::plugin_api::ZeroCopyBuf;
 
-use serde::Deserialize;
+use swc_ecma_parser::Syntax;
+use swc_ecma_parser::TsConfig;
 
-use core::{analyzer, parser, printer, transformer};
+use core::{
+    analyzer,
+    options::{AnalyzerArguments, ParseArguments, ParseOptions},
+    parser, printer, transformer,
+};
 
 #[no_mangle]
 pub fn deno_plugin_init(interface: &mut dyn Interface) {
@@ -13,17 +18,6 @@ pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("print", op_print);
     interface.register_op("extract_dependencies", ops_extract_dependencies);
     interface.register_op("transform", op_transform);
-}
-
-#[derive(Deserialize)]
-struct ParseArguments {
-    src: String,
-}
-
-#[derive(Deserialize)]
-struct AnalyzerArguments {
-    src: String,
-    dynamic: bool,
 }
 
 #[allow(clippy::needless_return)]
@@ -84,7 +78,21 @@ fn op_transform(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     let params: ParseArguments = serde_json::from_slice(&data).unwrap();
-    match parser::parse(params.src) {
+    let opt = match params.opt {
+        Some(o) => o,
+        None => {
+            let mut ts_config = TsConfig::default();
+            ts_config.dynamic_import = true;
+            let syntax = Syntax::Typescript(ts_config);
+            ParseOptions {
+                target: swc_ecma_parser::JscTarget::Es2019,
+                comments: true,
+                is_module: true,
+                syntax,
+            }
+        }
+    };
+    match parser::parse(params.src, opt) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Program");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
