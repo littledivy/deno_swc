@@ -5,6 +5,6 @@ import {
 export function transform(
   src: string,
 ) {
-  const result = JSON.parse(swc_transform(opt));
+  const result = JSON.parse(swc_transform(src));
   return result;
 }

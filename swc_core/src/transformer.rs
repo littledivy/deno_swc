@@ -1,16 +1,11 @@
 use anyhow::Error;
 use std::sync::Arc;
-use std::path::PathBuf;
 use swc::{
-    common::{self, errors::Handler, FilePathMapping, SourceMap},
-    config::SourceMapsConfig,
-    ecmascript::ast::Program,
+    common::{self, errors::Handler, FilePathMapping, SourceMap, FileName},
     Compiler, TransformOutput,
 };
 
 pub fn transform(program_data: String) -> Result<TransformOutput, Error> {
-    let program: Program =
-        serde_json::from_str(&program_data).expect("failed to deserialize Program");
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
     let handler = Arc::new(Handler::with_tty_emitter(
         common::errors::ColorConfig::Always,
@@ -20,6 +15,7 @@ pub fn transform(program_data: String) -> Result<TransformOutput, Error> {
     ));
     let c = Arc::new(Compiler::new(cm, handler));
     c.run(|| {
-        c.process_js(program, &Default::default())
+        let scf = c.cm.new_source_file(FileName::Anon, program_data);
+        c.process_js_file(scf, &Default::default())
     })
 }
