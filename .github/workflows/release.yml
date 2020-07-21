@@ -81,7 +81,6 @@ jobs:
         run: cargo +nightly build --release
 
       - name: Get version
-      - uses: denolib/setup-deno@master
         # give this job an ID
         id: v
         # set output for this job
