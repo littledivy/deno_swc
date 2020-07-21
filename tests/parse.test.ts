@@ -4,7 +4,7 @@ import { assertEquals } from "./deps.ts";
 Deno.test("parse (no error)", () => {
   const result = parseTypescript("const x: number = 2;", {
     target: "es2017",
-    syntax: "typescript"
+    syntax: "typescript",
   });
   assertEquals(result, {
     type: "ok",
