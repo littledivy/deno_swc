@@ -86,7 +86,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # use the version job ID to get the output
-          tag_name: $(echo `deno run ./tools/print-version.ts --quiet`)
+          tag_name: ${{ echo `deno run ./tools/print-version.ts --quiet` }}
           files: |
             target/release/libdeno_swc.dylib
             target/release/deno_swc.dll
