@@ -3,7 +3,7 @@ use std::sync::Arc;
 use swc::{
     common::{self, errors::Handler, FileName, FilePathMapping, SourceMap},
     config::{Config, JscConfig, Options},
-    ecmascript::parser::{EsConfig, JscTarget, Syntax, TsConfig},
+    ecmascript::parser::{EsConfig, JscTarget, Syntax},
     Compiler, TransformOutput,
 };
 
