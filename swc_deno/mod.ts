@@ -8,21 +8,16 @@ export const DenoSWC = async ({
 }: {
   /**
    * Under normal circumstances, this value should be same as 
-   * the version of DenoSWC.
+   * the version of DenoSWC.  
+   * 
+   * For example: "v0.0.1"
    */
   pluginVersion: string;
 }) => {
-  if (pluginVersion === "DANGEROUSLY_USE_LATEST") {
-    console.warn(
-      "WARNING: Using latest plugin for Deno SWC, please do not use this in production environment!",
-    );
-  }
   const { swc_extract_dependencies, swc_parse_ts, swc_print } =
     await initPlugin(
       {
-        releaseTag: pluginVersion === "DANGEROUSLY_USE_LATEST"
-          ? "latest"
-          : pluginVersion,
+        releaseTag: pluginVersion,
       },
     );
   return {

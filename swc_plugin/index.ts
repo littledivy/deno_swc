@@ -11,7 +11,7 @@ const isDev = Deno.env.get("DEV");
 export const initPlugin = async ({ releaseTag }: { releaseTag: string }) => {
   throw new Error(`
     TODO:
-    (1) Validate that the release tag is either "latest" or is an existing tag
+    (1) Validate that the release tag is an existing tag
     (2) Retrieve corresponding asset URL based on releaseTag
   `);
   if (isDev) {

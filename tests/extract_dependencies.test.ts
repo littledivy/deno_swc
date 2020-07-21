@@ -1,8 +1,8 @@
-import { assertEquals } from "./deps.ts";
+import { assertEquals, getLatestReleaseTag } from "./deps.ts";
 import { DenoSWC } from "../mod.ts";
 
 const { extractDependencies } = await DenoSWC(
-  { pluginVersion: "DANGEROUSLY_USE_LATEST" },
+  { pluginVersion: await getLatestReleaseTag() },
 );
 Deno.test("getDependencies", () => {
   const result = extractDependencies(

@@ -1,8 +1,8 @@
 import { DenoSWC } from "../mod.ts";
-import { assertEquals } from "./deps.ts";
+import { assertEquals, getLatestReleaseTag } from "./deps.ts";
 
 const { print } = await DenoSWC(
-  { pluginVersion: "DANGEROUSLY_USE_LATEST" },
+  { pluginVersion: await getLatestReleaseTag() },
 );
 Deno.test("print (no error)", () => {
   const result = print({
