@@ -77,7 +77,9 @@ jobs:
         run: cargo +nightly build --release
 
       - name: Get version
+        # give this job an ID
         id: v
+        # set output for this job
         run: VERSION=`deno run ./tools/print-version.ts --quiet`
              echo ::set-output name=version::$VERSION
 
@@ -86,6 +88,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          # use the version job ID to get the output
           tag_name: ${{ steps.v.outputs.version }}
           files: |
             target/release/libdeno_swc.dylib
