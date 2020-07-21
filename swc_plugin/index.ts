@@ -1,10 +1,11 @@
 import { prepare } from "../deps.ts";
 import { ParseOptions, AnalyzeOptions } from "../types/options.ts";
+import { version } from "../version.ts";
 
 const filenameBase = "deno_swc";
 
 const PLUGIN_URL_BASE =
-  "https://github.com/divy-work/deno_swc/releases/latest/download";
+  `https://github.com/nestdotland/deno_swc/releases/${version}/download`;
 
 const isDev = Deno.env.get("DEV");
 
