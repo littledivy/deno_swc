@@ -80,13 +80,15 @@ jobs:
           RUST_BACKTRACE: 1
         run: cargo +nightly build --release
 
+      - name: Get tag name
+        run: echo ::set-env name=TAGNAME::$(echo `deno run ./tools/print-version.ts --quiet`)
+
       - name: Release Plugin
         uses: softprops/action-gh-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # use the version job ID to get the output
-          tag_name: "release draft"
+          tag_name: ${{ env.TAGNAME }}
           draft: true
           files: |
             target/release/libdeno_swc.dylib
