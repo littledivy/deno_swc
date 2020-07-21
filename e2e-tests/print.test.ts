@@ -1,5 +1,5 @@
-import { print } from "../mod.ts";
-import { assertEquals } from "./deps.ts";
+import { print } from "./deps.ts";
+import { assertEquals } from "../tests/deps.ts";
 
 Deno.test("print (no error)", () => {
   const result = print({

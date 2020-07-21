@@ -1,5 +1,5 @@
-import { parseTypescript } from "../mod.ts";
-import { assertEquals } from "./deps.ts";
+import { assertEquals } from "../tests/deps.ts";
+import { parseTypescript } from "./deps.ts";
 
 Deno.test("parse (no error)", () => {
   const result = parseTypescript({
