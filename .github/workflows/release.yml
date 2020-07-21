@@ -26,6 +26,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v1
 
+      - uses: denolib/setup-deno@master
+        with:
+          deno-version: v1.2.0
+
       - name: Install rust
         uses: hecrj/setup-rust-action@v1
         with:
@@ -76,13 +80,21 @@ jobs:
           RUST_BACKTRACE: 1
         run: cargo +nightly build --release
 
+      - name: Get version
+      - uses: denolib/setup-deno@master
+        # give this job an ID
+        id: v
+        # set output for this job
+        run: VERSION=`deno run ./tools/print-version.ts --quiet`
+             echo ::set-output name=version::$VERSION
+
       - name: Release Plugin
         uses: softprops/action-gh-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "release draft"
-          draft: true
+          # use the version job ID to get the output
+          tag_name: ${{ steps.v.outputs.version }}
           files: |
             target/release/libdeno_swc.dylib
             target/release/deno_swc.dll
