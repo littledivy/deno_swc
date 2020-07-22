@@ -12,6 +12,11 @@
 
 > 🌀 The library is not yet stable. Expect breaking changes.
 
+![e2e-test](https://github.com/nestdotland/deno_swc/workflows/e2e-test/badge.svg)
+![dev-ci](https://github.com/nestdotland/deno_swc/workflows/dev-ci/badge.svg)
+![release](https://github.com/nestdotland/deno_swc/workflows/release/badge.svg)
+![](https://img.shields.io/github/v/release/nestdotland/deno_swc?style=plastic)
+
 ## Folder structure
 - `swc_deno` is for deno source
 - `swc_plugin` is for opening deno plugin
