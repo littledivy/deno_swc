@@ -7,8 +7,9 @@ use swc_ecma_parser::Syntax;
 use swc_ecma_parser::TsConfig;
 
 use core::{
-    analyzer, parser, printer, transformer, bundler,
+    analyzer, bundler,
     options::{AnalyzerArguments, ParseArguments, ParseOptions},
+    parser, printer, transformer,
 };
 
 #[no_mangle]
@@ -75,7 +76,6 @@ fn op_transform(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -
     }
 }
 
-
 fn op_bundle(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
     match bundler::bundle(data) {
@@ -85,14 +85,12 @@ fn op_bundle(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> O
             Op::Sync(result_box)
         }
         Err(e) => {
-            let result =
-                serde_json::to_string(&e.to_string()).expect("failed to serialize Bundle");
+            let result = serde_json::to_string(&e.to_string()).expect("failed to serialize Bundle");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
     }
 }
-
 
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
