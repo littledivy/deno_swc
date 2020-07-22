@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/divy-beta/deno_swc">
-    <img src="./assets/deno_swc.png" alt="deno_swc logo" width="310">
+    <img src="assets/deno_swc.png" alt="deno_swc logo" width="310">
   </a>
   <h3 align="center">deno_swc</h3>
 
@@ -17,10 +17,38 @@
 ![release](https://github.com/nestdotland/deno_swc/workflows/release/badge.svg)
 ![](https://img.shields.io/github/v/release/nestdotland/deno_swc?style=plastic)
 
+## Usage
+
+```typescript
+import { parseTypescript } from "https://x.nest.land/swc@0.3.0-rc.1/mod.ts";
+
+parseTypescript(`const x: string = "Hello, Deno SWC!"`);
+
+// Output AST
+{
+  type: "ok",
+  value: {
+    type: "Module",
+    span: { start: 3, end: 31, ctxt: 0 },
+    body: [
+      {
+        type: "ImportDeclaration",
+        span: [Object],
+        specifiers: [Array],
+        source: [Object],
+        typeOnly: false
+      }
+    ],
+    interpreter: null
+  }
+}
+```
+
 ## Folder structure
-- `swc_deno` is for deno source
-- `swc_plugin` is for opening deno plugin
-- `src` for rust source
+- `swc_core` - core `swc` methods.
+- `swc_deno` - applying types and options to plugin ops.
+- `swc_plugin` - loading plugin ops and dispatch them.
+- `src` - `swc_core` bindings to Deno.
 
 ## Copyright
 
