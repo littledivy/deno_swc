@@ -4,15 +4,18 @@ use spack::{
     resolve::NodeResolver,
     BundleKind,
 };
+use fxhash::FxHashMap;
 use std::{
     panic::{catch_unwind, AssertUnwindSafe},
     sync::Arc,
 };
 use swc::{
     common::{self, errors::Handler, FilePathMapping, SourceMap},
-    Compiler,
+    config::{SourceMapsConfig},
+    Compiler, TransformOutput
 };
-pub fn bundle(data: &[u8]) -> Result<Vec<spack::Bundle>, Error> {
+
+pub fn bundle(data: &[u8]) -> Result<FxHashMap<String, TransformOutput>, Error> {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
     let _params: serde_json::Value = serde_json::from_slice(&data).unwrap();
     let handler = Arc::new(Handler::with_tty_emitter(
@@ -43,6 +46,24 @@ pub fn bundle(data: &[u8]) -> Result<Vec<spack::Bundle>, Error> {
                 output: None,
                 entry: spack::config::EntryConfig::File("asd".to_string()),
             })?;
+            let result = result
+                .into_iter()
+                .map(|bundle| match bundle.kind {
+                    BundleKind::Named { name } | BundleKind::Lib { name } => {
+                        Ok((name, bundle.module))
+                    }
+                    BundleKind::Dynamic => bail!("unimplemented: dynamic code splitting"),
+                })
+                .map(|res| {
+                    res.and_then(|(k, m)| {
+                        // TODO: Source map
+                        let minify = false;
+                        let output = c.print(&m, SourceMapsConfig::Bool(true), None, minify)?;
+                        Ok((k, output))
+                    })
+                })
+                .collect::<Result<_, _>>()?;
+
             Ok(result)
     }));
 

@@ -172,6 +172,7 @@ name = "core"
 version = "0.0.1"
 dependencies = [
  "anyhow",
+ "fxhash",
  "serde",
  "serde_json",
  "spack",

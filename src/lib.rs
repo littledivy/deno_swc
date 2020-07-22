@@ -7,9 +7,8 @@ use swc_ecma_parser::Syntax;
 use swc_ecma_parser::TsConfig;
 
 use core::{
-    analyzer,
+    analyzer, parser, printer, transformer, bundler,
     options::{AnalyzerArguments, ParseArguments, ParseOptions},
-    parser, printer, transformer,
 };
 
 #[no_mangle]
@@ -18,6 +17,7 @@ pub fn deno_plugin_init(interface: &mut dyn Interface) {
     interface.register_op("print", op_print);
     interface.register_op("extract_dependencies", ops_extract_dependencies);
     interface.register_op("transform", op_transform);
+    interface.register_op("bundle", op_bundle);
 }
 
 #[allow(clippy::needless_return)]
@@ -31,7 +31,7 @@ fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [Zer
             Op::Sync(result_box)
         }
         Err(_) => {
-            //TODO: return actual error message instead of "parse_error"
+            // TODO: return actual error message instead of "parse_error"
             let result = serde_json::to_string("parse_error").expect("failed to serialize Deps");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
@@ -74,6 +74,25 @@ fn op_transform(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -
         }
     }
 }
+
+
+fn op_bundle(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
+    let data = &zero_copy[0][..];
+    match bundler::bundle(data) {
+        Ok(program) => {
+            let result = serde_json::to_string(&program).expect("failed to serialize Bundle");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+        Err(e) => {
+            let result =
+                serde_json::to_string(&e.to_string()).expect("failed to serialize Bundle");
+            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            Op::Sync(result_box)
+        }
+    }
+}
+
 
 fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
