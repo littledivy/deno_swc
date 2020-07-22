@@ -21,7 +21,7 @@ pub fn bundle(data: &[u8]) -> Result<FxHashMap<String, TransformOutput>, Error> 
         Some(cm.clone()),
     ));
     let r = box NodeResolver as Box<_>;
-    let c = Arc::new(Compiler::new(cm.clone(), handler));
+    let c = Arc::new(Compiler::new(cm, handler));
     let loader = loaders::swc::SwcLoader::new(c.clone(), Default::default());
     let res = catch_unwind(AssertUnwindSafe(|| {
         let bundler = spack::Bundler::new(
