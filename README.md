@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/divy-beta/deno_swc">
-    <img src="assets/deno_swc.png" alt="deno_swc logo" width="310">
+    <img src="https://raw.githubusercontent.com/nestdotland/deno_swc/master/assets/deno_swc.png" alt="deno_swc logo" width="310">
   </a>
   <h3 align="center">deno_swc</h3>
 

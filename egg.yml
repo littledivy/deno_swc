@@ -1,7 +1,7 @@
 name: swc
 description: High quality SWC bindings for Deno
 stable: true
-version: 0.3.0-rc.1
+version: 0.3.2
 files:
   - ./README.md
   - ./swc_deno/**/*
@@ -11,3 +11,4 @@ files:
   - ./swc_plugin/**/*
   - ./assets/**/*
   - ./types/**/*
+  - ./examples/**/*
