@@ -61,6 +61,7 @@ const {
   extract_dependencies,
   print,
   transform,
+  bundle,
 } = core.ops();
 
 const textDecoder = new TextDecoder();
@@ -94,6 +95,14 @@ export function swc_transform(src: string) {
   const response = core.dispatch(
     transform,
     textEncoder.encode(JSON.stringify(src)),
+  );
+  return JSON.parse(textDecoder.decode(response));
+}
+
+export function swc_bundle(cnf: object) {
+  const response = core.dispatch(
+    bundle,
+    textEncoder.encode(JSON.stringify(cnf)),
   );
   return JSON.parse(textDecoder.decode(response));
 }

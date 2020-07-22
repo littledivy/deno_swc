@@ -7,6 +7,7 @@ publish = false
 
 [dependencies]
 swc = { git = "https://github.com/swc-project/swc", rev = "053f81c" }
+spack = { git = "https://github.com/swc-project/swc", rev = "053f81c" }
 swc_ecma_visit = "0.8.0"
 swc_ecma_ast = "=0.23.1"
 swc_common = "0.6.2"
@@ -14,3 +15,4 @@ swc_ecma_parser = "0.27.0"
 anyhow = "1.0.31"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+fxhash = "0.2"
