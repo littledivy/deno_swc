@@ -1,2 +1,2 @@
 import { version } from "../version.ts";
-console.log(version);
+console.log("::set-env name=TAGNAME::" + version)
