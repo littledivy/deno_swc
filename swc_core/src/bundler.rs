@@ -13,7 +13,7 @@ use swc::{
 
 pub fn bundle(data: &[u8]) -> Result<FxHashMap<String, TransformOutput>, Error> {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
-    let file: serde_json::Value = serde_json::from_slice(&data).unwrap();
+    let opt: spack::config::Config = serde_json::from_slice(&data).unwrap();
     let handler = Arc::new(Handler::with_tty_emitter(
         common::errors::ColorConfig::Always,
         true,
@@ -30,17 +30,7 @@ pub fn bundle(data: &[u8]) -> Result<FxHashMap<String, TransformOutput>, Error> 
             &r,
             &loader,
         );
-
-        let result = bundler.bundle(&spack::config::Config {
-            working_dir: std::path::PathBuf::from("./"),
-            mode: spack::config::Mode::Production,
-            module: spack::config::ModuleConfig {},
-            optimization: None,
-            resolve: None,
-            options: None,
-            output: None,
-            entry: spack::config::EntryConfig::File(file.to_string()),
-        })?;
+        let result = bundler.bundle(&opt)?;
         let result = result
             .into_iter()
             .map(|bundle| match bundle.kind {

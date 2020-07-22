@@ -99,10 +99,10 @@ export function swc_transform(src: string) {
   return JSON.parse(textDecoder.decode(response));
 }
 
-export function swc_bundle(src: string) {
+export function swc_bundle(cnf: object) {
   const response = core.dispatch(
     bundle,
-    textEncoder.encode(JSON.stringify(src)),
+    textEncoder.encode(JSON.stringify(cnf)),
   );
   return JSON.parse(textDecoder.decode(response));
 }

@@ -3,8 +3,8 @@ import {
 } from "../swc_plugin/index.ts";
 
 export function bundle(
-  src: string,
+  cnf: object,
 ) {
-  const result = JSON.parse(swc_bundle(src));
+  const result = JSON.parse(swc_bundle(cnf));
   return result;
 }
