@@ -1,4 +1,4 @@
-import { analyze } from "../swc_deno/mod.ts";
+import { analyze } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("getDependencies", () => {

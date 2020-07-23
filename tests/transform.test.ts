@@ -1,4 +1,4 @@
-import { transform, parseTypescript } from "../mod.ts";
+import { transform, parse } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("transform (no error)", () => {
