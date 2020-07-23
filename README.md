@@ -29,14 +29,14 @@ parseTypescript(`const x: string = "Hello, Deno SWC!"`);
   type: "ok",
   value: {
     type: "Module",
-    span: { start: 3, end: 31, ctxt: 0 },
+    span: { start: 0, end: 36, ctxt: 0 },
     body: [
       {
-        type: "ImportDeclaration",
+        type: "VariableDeclaration",
         span: [Object],
-        specifiers: [Array],
-        source: [Object],
-        typeOnly: false
+        kind: "const",
+        declare: false,
+        declarations: [Array]
       }
     ],
     interpreter: null
