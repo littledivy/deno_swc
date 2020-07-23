@@ -1,6 +1,6 @@
+use crate::options::PrintArguments;
 use anyhow::Error;
 use std::sync::Arc;
-use crate::options::PrintArguments;
 use swc::{
     common::{self, errors::Handler, FilePathMapping, SourceMap},
     config::SourceMapsConfig,
@@ -26,12 +26,12 @@ pub fn print(program_data: PrintArguments) -> Result<TransformOutput, Error> {
                 .unwrap_or(SourceMapsConfig::Bool(false)),
             None,
             program_data
-                    .options
-                    .config
-                    .clone()
-                    .unwrap_or_default()
-                    .minify
-                    .unwrap_or(false)
+                .options
+                .config
+                .clone()
+                .unwrap_or_default()
+                .minify
+                .unwrap_or(false),
         )
     })
 }
