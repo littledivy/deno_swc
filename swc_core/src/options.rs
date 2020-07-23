@@ -1,9 +1,17 @@
 use serde::{Deserialize, Serialize};
+pub use swc::config::Options;
+use swc::ecmascript::ast::Program;
 
 #[derive(Deserialize)]
 pub struct ParseArguments {
     pub src: String,
     pub opt: Option<ParseOptions>,
+}
+
+#[derive(Deserialize)]
+pub struct PrintArguments {
+    pub program: Program,
+    pub options: Options,
 }
 
 #[derive(Deserialize)]

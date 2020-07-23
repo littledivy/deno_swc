@@ -8,7 +8,7 @@ use swc_ecma_parser::TsConfig;
 
 use core::{
     analyzer, bundler,
-    options::{AnalyzerArguments, ParseArguments, ParseOptions},
+    options::{AnalyzerArguments, ParseArguments, ParseOptions, PrintArguments},
     parser, printer, transformer,
 };
 
@@ -42,8 +42,8 @@ fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [Zer
 
 fn op_print(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op {
     let data = &zero_copy[0][..];
-    let prg: serde_json::Value = serde_json::from_slice(&data).unwrap();
-    match printer::print(prg.to_string()) {
+    let prg: PrintArguments = serde_json::from_slice(&data).unwrap();
+    match printer::print(prg) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Program");
             let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();

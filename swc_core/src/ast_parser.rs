@@ -10,7 +10,7 @@ use swc_common::{
     errors::{Diagnostic, DiagnosticBuilder, Handler, HandlerFlags},
     FileName, Globals, SourceMap,
 };
-use swc_ecma_parser::{lexer::Lexer, Parser, Session, SourceFileInput, Syntax, TsConfig};
+use swc_ecma_parser::{lexer::Lexer, Parser, Session, SourceFileInput};
 
 #[derive(Clone, Debug)]
 pub struct SwcDiagnosticBuffer {
@@ -111,9 +111,9 @@ impl AstParser {
                 handler: &self.handler,
             };
 
-            let mut ts_config = TsConfig::default();
-            ts_config.dynamic_import = true;
-            let syntax = Syntax::Typescript(ts_config);
+            // let mut ts_config = TsConfig::default();
+            // ts_config.dynamic_import = true;
+            let syntax = opt.syntax;
 
             let lexer = Lexer::new(
                 session,

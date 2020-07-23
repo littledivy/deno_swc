@@ -1,15 +1,13 @@
 use anyhow::Error;
 use std::sync::Arc;
+use crate::options::PrintArguments;
 use swc::{
     common::{self, errors::Handler, FilePathMapping, SourceMap},
     config::SourceMapsConfig,
-    ecmascript::ast::Program,
     Compiler, TransformOutput,
 };
 
-pub fn print(program_data: String) -> Result<TransformOutput, Error> {
-    let program: Program =
-        serde_json::from_str(&program_data).expect("failed to deserialize Program");
+pub fn print(program_data: PrintArguments) -> Result<TransformOutput, Error> {
     let cm = Arc::new(SourceMap::new(FilePathMapping::empty()));
     let handler = Arc::new(Handler::with_tty_emitter(
         common::errors::ColorConfig::Always,
@@ -20,10 +18,20 @@ pub fn print(program_data: String) -> Result<TransformOutput, Error> {
     let c = Arc::new(Compiler::new(cm, handler));
     c.run(|| {
         c.print(
-            &program,
-            SourceMapsConfig::Bool(false),
+            &program_data.program,
+            program_data
+                .options
+                .source_maps
+                .clone()
+                .unwrap_or(SourceMapsConfig::Bool(false)),
             None,
-            false, // minify: false
+            program_data
+                    .options
+                    .config
+                    .clone()
+                    .unwrap_or_default()
+                    .minify
+                    .unwrap_or(false)
         )
     })
 }
