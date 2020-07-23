@@ -1,8 +1,8 @@
-import { extractDependencies } from "../swc_deno/extract_dependencies.ts";
+import { analyze } from "../swc_deno/mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("getDependencies", () => {
-  const result = extractDependencies(
+  const result = analyze(
     { src: `import * as B from "./b.ts"; console.log(B);`, dynamic: false },
   );
   assertEquals(result, {
@@ -14,11 +14,11 @@ Deno.test("getDependencies", () => {
 });
 
 Deno.test("getDependencies (dynamic imports)", () => {
-  const result = extractDependencies(
+  const result = analyze(
     {
       src: `
-        import * as B from "./b.ts"; 
-        await import("./a.ts"); 
+        import * as B from "./b.ts";
+        await import("./a.ts");
         console.log(B);
       `,
       dynamic: true,
@@ -34,7 +34,7 @@ Deno.test("getDependencies (dynamic imports)", () => {
 });
 
 Deno.test("getDependencies (parse error)", () => {
-  const result = extractDependencies(
+  const result = analyze(
     {
       src: `this sentence is no valid javascript`,
       dynamic: false,
