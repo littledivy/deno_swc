@@ -20,9 +20,9 @@
 ## Usage
 
 ```typescript
-import { parseTypescript } from "https://x.nest.land/swc@0.3.0-rc.1/mod.ts";
+import { parse } from "https://x.nest.land/swc@0.0.4/mod.ts";
 
-parseTypescript(`const x: string = "Hello, Deno SWC!"`);
+parse(`const x: string = "Hello, Deno SWC!"`);
 
 // Output AST
 {
