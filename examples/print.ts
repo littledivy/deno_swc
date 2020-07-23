@@ -1,4 +1,7 @@
-import { parseTypescript, print } from "https://x.nest.land/swc@0.3.0-rc.1/mod.ts";
+import {
+  parseTypescript,
+  print,
+} from "https://x.nest.land/swc@0.3.0-rc.1/mod.ts";
 
 const code: string = `
 interface H {
@@ -19,10 +22,14 @@ switch (x) {
 
 console.log(
   // @ts-ignore
-  print({ program: parseTypescript(code, { target: "es2020", syntax: "typescript"}).value,
-    options: {
-      minify: true,
-      isModule: true
-    }
-  }).code
-)
+  print(
+    {
+      program:
+        parseTypescript(code, { target: "es2020", syntax: "typescript" }).value,
+      options: {
+        minify: true,
+        isModule: true,
+      },
+    },
+  ).code,
+);
