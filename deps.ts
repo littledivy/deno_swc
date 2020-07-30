@@ -1,2 +1,2 @@
-export { prepare } from "https://deno.land/x/plugin_prepare@d989f1d/mod.ts"; // Should use version but has not released yet
+export { Plug } from "https://deno.land/x/plug@0.0.5/mod.ts";
 export { deferred } from "https://deno.land/std@0.51.0/async/mod.ts";
