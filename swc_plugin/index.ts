@@ -7,7 +7,7 @@ const PLUG_NAME = "deno_swc";
 const DEV_ENV = Deno.env.get("DEV");
 
 const PLUGIN_URL_BASE = DEV_ENV
-  ? './target/debug/'
+  ? "./target/debug/"
   : `https://github.com/nestdotland/deno_swc/releases/download/${version}`;
 
 const rid = await Plug.prepare({
