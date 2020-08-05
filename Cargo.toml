@@ -1,6 +1,6 @@
 [package]
 name = "deno-swc"
-version = "0.0.1"
+version = "0.0.5"
 authors = ["Divy Srivastava <dj.srivastava23@gmail.com>"]
 edition = "2018"
 publish = false

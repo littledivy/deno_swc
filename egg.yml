@@ -2,7 +2,7 @@ name: swc
 description: High quality SWC bindings for Deno
 stable: true
 repository: https://github.com/nestdotland/deno_swc
-version: 0.0.4
+version: 0.0.5
 files:
   - ./README.md
   - ./swc_deno/**/*
