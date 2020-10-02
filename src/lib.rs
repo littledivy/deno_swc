@@ -1,7 +1,7 @@
-use deno_core::plugin_api::Buf;
 use deno_core::plugin_api::Interface;
 use deno_core::plugin_api::Op;
 use deno_core::plugin_api::ZeroCopyBuf;
+use deno_core::serde_json;
 
 use swc_ecma_parser::Syntax;
 use swc_ecma_parser::TsConfig;
@@ -28,13 +28,13 @@ fn ops_extract_dependencies(_interface: &mut dyn Interface, zero_copy: &mut [Zer
     match analyzer::analyze_dependencies(&params.src, params.dynamic) {
         Ok(deps) => {
             let result = serde_json::to_string(&deps).expect("failed to serialize Deps");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
         Err(_) => {
             // TODO: return actual error message instead of "parse_error"
             let result = serde_json::to_string("parse_error").expect("failed to serialize Deps");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
     }
@@ -46,13 +46,13 @@ fn op_print(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
     match printer::print(prg) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Program");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
         Err(e) => {
             let result =
                 serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
     }
@@ -64,13 +64,13 @@ fn op_transform(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -
     match transformer::transform(prg.to_string()) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Program");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
         Err(e) => {
             let result =
                 serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
     }
@@ -81,12 +81,12 @@ fn op_bundle(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> O
     match bundler::bundle(data) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Bundle");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
         Err(e) => {
             let result = serde_json::to_string(&e.to_string()).expect("failed to serialize Bundle");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
     }
@@ -112,13 +112,13 @@ fn op_parse(_interface: &mut dyn Interface, zero_copy: &mut [ZeroCopyBuf]) -> Op
     match parser::parse(params.src, opt) {
         Ok(program) => {
             let result = serde_json::to_string(&program).expect("failed to serialize Program");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
         Err(e) => {
             let result =
                 serde_json::to_string(&e.to_string()).expect("failed to serialize Program");
-            let result_box: Buf = serde_json::to_vec(&result).unwrap().into_boxed_slice();
+            let result_box = serde_json::to_vec(&result).unwrap().into_boxed_slice();
             Op::Sync(result_box)
         }
     }
