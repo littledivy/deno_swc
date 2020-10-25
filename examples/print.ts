@@ -1,7 +1,4 @@
-import {
-  parse,
-  print,
-} from "../mod.ts";
+import { parse, print } from "../mod.ts";
 
 const code: string = `
 interface H {
@@ -21,10 +18,8 @@ switch (x) {
 `;
 
 console.log(
-  print(parse(code, { target: "es2020", syntax: "typescript" }),
-      {
-        minify: true,
-        isModule: true,
-      }
-  ).code
+  print(parse(code, { target: "es2020", syntax: "typescript" }), {
+    minify: true,
+    isModule: true,
+  }).code,
 );

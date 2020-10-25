@@ -1,7 +1,10 @@
 import { parse } from "../mod.ts";
 
-console.log(parse(`
+console.log(parse(
+  `
   import * as a from "./a.ts";
-`, {
-  syntax: "ecmascript"
-}));
+`,
+  {
+    syntax: "ecmascript",
+  },
+));

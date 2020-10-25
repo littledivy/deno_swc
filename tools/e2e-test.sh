@@ -1,2 +1,2 @@
 #!/bin/sh
-deno test --allow-all --unstable
+deno test ./tests
