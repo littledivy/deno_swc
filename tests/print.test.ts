@@ -1,4 +1,4 @@
-import { print } from "../mod.ts";
+import { printSync } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("print (no error)", () => {

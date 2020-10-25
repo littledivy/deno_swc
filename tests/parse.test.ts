@@ -1,4 +1,4 @@
-import { parse } from "../mod.ts";
+import { parseSync } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("parse (no error)", () => {

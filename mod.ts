@@ -1,5 +1,28 @@
-export { parseTypescript as parse } from "./swc_deno/parse.ts";
-export { print } from "./swc_deno/print.ts";
-export { transform } from "./swc_deno/transform.ts";
-export { bundle } from "./swc_deno/bundle.ts";
-export { extractDependencies as analyze } from "./swc_deno/analyzeDependencies.ts";
+import init, {
+    source,
+    parseSync,
+} from "./swc_wasm/wasm.js";
+
+await init(source);
+
+export function parse(source: string, opts: any) { 
+    parseSync(source, opts); 
+};
+
+console.log(parseSync(
+    "import * as x from 'x'",
+    {
+        "syntax": "ecmascript",
+        "jsx": true,
+        "dynamicImport": false,
+        "numericSeparator": false,
+        "privateMethod": false,
+        "functionBind": false,
+        "exportDefaultFrom": false,
+        "exportNamespaceFrom": false,
+        "decorators": false,
+        "decoratorsBeforeExport": false,
+        "topLevelAwait": false,
+        "importMeta": false
+      }
+))
