@@ -1,5 +1,7 @@
-import { parseTypescript } from "https://x.nest.land/swc@0.3.0-rc.1/mod.ts";
+import { parse } from "../mod.ts";
 
-console.log(parseTypescript(`
+console.log(parse(`
   import * as a from "./a.ts";
-`));
+`, {
+  syntax: "ecmascript"
+}));
