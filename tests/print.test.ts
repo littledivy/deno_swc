@@ -1,9 +1,8 @@
-import { printSync } from "../mod.ts";
+import { print } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("print (no error)", () => {
   const result = print({
-    program: {
       type: "Module",
       body: [
         {
@@ -43,9 +42,8 @@ Deno.test("print (no error)", () => {
       interpreter: null,
       span: { ctxt: 0, end: 20, start: 0 },
     },
-    options: {
-      minify: true,
-    },
+  {
+    minify: true,
   });
   assertEquals(result.code.trim(), "const x:number=2;");
 });

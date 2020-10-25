@@ -1,6 +1,5 @@
 import { parse } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
-import settings from "./settings.ts";
 
 Deno.test("parse (no error)", () => {
   const result = parse("const x: number = 2;", {
