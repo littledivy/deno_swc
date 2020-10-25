@@ -21,7 +21,7 @@ pub fn parse_sync(s: &str, opts: JsValue) -> Result<JsValue, JsValue> {
 
     let opts: ParseOptions = opts
         .into_serde()
-        .map_err(|err| format!("failed to parse options: {}", err))?;
+        .map_err(|err| format!("failed to parse swc options: {}", err))?;
 
     let (c, errors) = compiler();
 

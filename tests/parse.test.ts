@@ -1,14 +1,12 @@
-import { parseSync } from "../mod.ts";
+import { parse } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
+import settings from "./settings.ts";
 
 Deno.test("parse (no error)", () => {
   const result = parse("const x: number = 2;", {
-    target: "es2017",
-    syntax: "typescript",
+        "syntax": "typescript",
   });
   assertEquals(result, {
-    type: "ok",
-    value: {
       type: "Module",
       body: [
         {
@@ -47,11 +45,5 @@ Deno.test("parse (no error)", () => {
       ],
       interpreter: null,
       span: { ctxt: 0, end: 20, start: 0 },
-    },
-  });
-});
-
-Deno.test("parse (with errors)", () => {
-  const result = parse("x = 3 3");
-  assertEquals(result, { type: "error", error: "" });
+    });
 });
