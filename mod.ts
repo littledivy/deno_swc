@@ -5,7 +5,12 @@ import init, {
   transformSync,
 } from "./swc_wasm/wasm.js";
 
-import { ParseOptions, Config, TransformConfig, Program } from "./types/options.ts";
+import {
+  Config,
+  ParseOptions,
+  Program,
+  TransformConfig,
+} from "./types/options.ts";
 
 await init(source);
 
@@ -18,6 +23,9 @@ export function print(program: any, opts: Config): { code: string } {
   return printSync(program, opts);
 }
 
-export function transform(source: string, opts: TransformConfig): { code: string } {
+export function transform(
+  source: string,
+  opts: TransformConfig,
+): { code: string } {
   return transformSync(source, opts);
 }
