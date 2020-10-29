@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: denolib/setup-deno@master
         with:
-          deno-version: v1.2.0
+          deno-version: v1.5.0
       - name: Format Check
         run: deno fmt --check
 
