@@ -1,15 +1,14 @@
 name: swc
-description: High quality SWC bindings for Deno
+description: The SWC compiler for Deno
 stable: true
 repository: https://github.com/nestdotland/deno_swc
-version: 0.0.5
+version: 0.0.6
 files:
   - ./README.md
-  - ./swc_deno/**/*
+  - ./swc_wasm/**/*
   - mod.ts
   - deps.ts
   - version.ts
-  - ./swc_plugin/**/*
   - ./assets/**/*
   - ./types/**/*
   - ./examples/**/*

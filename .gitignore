@@ -1,2 +1,3 @@
 target/
-.deno_plugins/
+swc_wasm/pkg
+

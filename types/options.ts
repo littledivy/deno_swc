@@ -1,8 +1,3 @@
-export interface AnalyzeOptions {
-  src: string;
-  dynamic: boolean;
-}
-
 export interface Plugin {
   (module: Program): Program;
 }
