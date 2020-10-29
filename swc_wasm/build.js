@@ -1,5 +1,5 @@
 import { encode } from "https://deno.land/std@0.61.0/encoding/base64.ts";
-import Terser from "https://jspm.dev/terser@4.8.0";
+import Terser from "https://esm.sh/terser@4.8.0";
 
 const name = "deno_swc";
 
