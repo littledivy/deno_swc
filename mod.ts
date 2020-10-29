@@ -5,9 +5,11 @@ import init, {
   transformSync,
 } from "./swc_wasm/wasm.js";
 
+import { ParseOptions } from "./types/options.ts";
+
 await init(source);
 
-export function parse(source: string, opts: any) {
+export function parse(source: string, opts: ParseOptions) {
   return parseSync(source, opts);
 }
 
