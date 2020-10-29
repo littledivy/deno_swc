@@ -5,7 +5,7 @@ const name = "deno_swc";
 
 const encoder = new TextEncoder();
 
-async function requires(...executables: string[]) {
+async function requires(...executables) {
   const where = Deno.build.os === "windows" ? "where" : "which";
 
   for (const executable of executables) {
@@ -22,7 +22,7 @@ async function requires(...executables: string[]) {
   }
 }
 
-async function run(msg: string, cmd: string[]) {
+async function run(msg,cmd) {
   log(msg);
 
   const process = Deno.run({ cmd });
@@ -32,11 +32,11 @@ async function run(msg: string, cmd: string[]) {
   }
 }
 
-function log(text: string): void {
+function log(text) {
   console.log(`[log] ${text}`);
 }
 
-function err(text: string): never {
+function err(text) {
   console.log(`[err] ${text}`);
   return Deno.exit(1);
 }
