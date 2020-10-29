@@ -6,11 +6,9 @@
   <h3 align="center">deno_swc</h3>
 
   <p align="center">
-    High quality bindings to the swc for Deno.
+    The SWC compiler for Deno.
  </p>
 </p>
-
-> 🌀 The library is not yet stable. Expect breaking changes.
 
 ![e2e-test](https://github.com/nestdotland/deno_swc/workflows/e2e-test/badge.svg)
 ![dev-ci](https://github.com/nestdotland/deno_swc/workflows/dev-ci/badge.svg)
@@ -20,35 +18,34 @@
 ## Usage
 
 ```typescript
-import { parse } from "https://x.nest.land/swc@0.0.4/mod.ts";
+import { parse, print } from "https://x.nest.land/swc@0.0.6/mod.ts";
 
-parse(`const x: string = "Hello, Deno SWC!"`);
+const ast = parse(`const x: string = "Hello, Deno SWC!"`,{
+  syntax: "typescript"
+});
 
-// Output AST
-{
-  type: "ok",
-  value: {
-    type: "Module",
-    span: { start: 0, end: 36, ctxt: 0 },
-    body: [
-      {
-        type: "VariableDeclaration",
-        span: [Object],
-        kind: "const",
-        declare: false,
-        declarations: [Array]
-      }
-    ],
-    interpreter: null
-  }
-}
+// {
+//   type: "Module",
+//   span: { start: 0, end: 36, ctxt: 0 },
+//   body: [
+//     {
+//       type: "VariableDeclaration",
+//       span: [Object],
+//       kind: "const",
+//       declare: false,
+//       declarations: [Array]
+//     }
+//   ],
+//   interpreter: null
+// }
+
+let code = print(ast, {
+  minify: true,
+  isModule: true,
+}).code;
+
+// const x: string = "Hello, Deno SWC!";
 ```
-
-## Folder structure
-- `swc_core` - core `swc` methods.
-- `swc_deno` - applying types and options to plugin ops.
-- `swc_plugin` - loading plugin ops and dispatch them.
-- `src` - `swc_core` bindings to Deno.
 
 ## Copyright
 
