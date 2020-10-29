@@ -22,7 +22,7 @@ async function requires(...executables) {
   }
 }
 
-async function run(msg,cmd) {
+async function run(msg, cmd) {
   log(msg);
 
   const process = Deno.run({ cmd });
