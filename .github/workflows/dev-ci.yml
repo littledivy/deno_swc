@@ -40,6 +40,8 @@ jobs:
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       - name: Install nightly Rust
         run: rustup install nightly
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Build swc_deno
         run: cd swc_wasm && deno run -A ./build.js
       - name: Test
