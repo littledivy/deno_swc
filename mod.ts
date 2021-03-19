@@ -19,8 +19,8 @@ export function parse(source: string, opts: ParseOptions): Program {
 }
 
 // TODO(littledivy): Typings for `program`
-export function print(program: any, opts: Config): { code: string } {
-  return printSync(program, opts);
+export function print(program: any, opts?: Config): { code: string } {
+  return printSync(program, opts || {});
 }
 
 export function transform(
