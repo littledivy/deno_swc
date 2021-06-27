@@ -39,17 +39,20 @@ switch (x) {
 `;
 
 const ast = parse(code, { target: "es2019", syntax: "typescript" });
-const code = print(ast.code, {
+const regeneratedCode = print(ast, {
   minify: true,
   module: {
     type: "commonjs"
   },
-});
+}).code;
 
-console.log(ast);
 console.log(code);
+console.log(''); console.log(''); console.log('');
+console.log(ast);
+console.log(''); console.log(''); console.log('');
+console.log(regeneratedCode);
 
-// const x: string = "Hello, Deno SWC!";
+// interface H{h:string;}const x:string=`Hello, ${"Hello"} Deno SWC!`;switch(x){case "value":console.log(x);break;default:break}
 ```
 
 ## Copyright
