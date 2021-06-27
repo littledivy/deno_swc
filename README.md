@@ -1,3 +1,5 @@
+# Quick Testing Fork by TamusJRoyce (upgraded to deno 1.11.1 (release, x86_64-pc-windows-msvc), v8 9.1.269.35, typescript 4.3.2)
+
 <br />
 <p align="center">
   <a href="https://github.com/divy-beta/deno_swc">
@@ -14,34 +16,38 @@
 ![dev-ci](https://github.com/nestdotland/deno_swc/workflows/dev-ci/badge.svg)
 ![](https://img.shields.io/github/v/release/nestdotland/deno_swc?style=plastic)
 
-## Usage
+## Usage [example code](./examples/print.ts)
 
 ```typescript
-import { parse, print } from "https://x.nest.land/swc@0.0.6/mod.ts";
+import { parse, print } from "https://raw.githubusercontent.com/tamusjroyce/deno_swc/master/mod.ts";
 
-const ast = parse(`const x: string = "Hello, Deno SWC!"`,{
-  syntax: "typescript"
+const code: string = `
+interface H {
+  h: string;
+}
+
+const x: string = \`Hello, $\{"Hello"} Deno SWC!\`;
+
+switch (x) {
+  case "value":
+    console.log(x);
+    break;
+
+  default:
+    break;
+}
+`;
+
+const ast = parse(code, { target: "es2019", syntax: "typescript" });
+const code = print(ast.code, {
+  minify: true,
+  module: {
+    type: "commonjs"
+  },
 });
 
-// {
-//   type: "Module",
-//   span: { start: 0, end: 36, ctxt: 0 },
-//   body: [
-//     {
-//       type: "VariableDeclaration",
-//       span: [Object],
-//       kind: "const",
-//       declare: false,
-//       declarations: [Array]
-//     }
-//   ],
-//   interpreter: null
-// }
-
-let code = print(ast, {
-  minify: true,
-  isModule: true,
-}).code;
+console.log(ast);
+console.log(code);
 
 // const x: string = "Hello, Deno SWC!";
 ```
