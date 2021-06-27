@@ -18,8 +18,10 @@ switch (x) {
 `;
 
 console.log(
-  print(parse(code, { target: "es2020", syntax: "typescript" }), {
+  print(parse(code, { target: "es2019", syntax: "typescript" }), {
     minify: true,
-    isModule: true,
+    module: {
+      type: "commonjs"
+    },
   }).code,
 );
