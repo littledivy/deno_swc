@@ -1,4 +1,5 @@
-import { parse, print } from "https://raw.githubusercontent.com/nestdotland/deno_swc/master/mod.ts";
+// import { parse, print } from "https://raw.githubusercontent.com/nestdotland/deno_swc/master/mod.ts";
+import { parse, print } from "../mod.ts";
 
 const code: string = `
 interface H {
