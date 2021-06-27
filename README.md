@@ -1,5 +1,3 @@
-# Quick Testing Fork by TamusJRoyce (upgraded to deno 1.11.1 (release, x86_64-pc-windows-msvc), v8 9.1.269.35, typescript 4.3.2)
-
 <br />
 <p align="center">
   <a href="https://github.com/divy-beta/deno_swc">
