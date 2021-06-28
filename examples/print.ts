@@ -26,10 +26,8 @@ const regeneratedCode = print(ast, {
   },
 }).code;
 
-console.log(code);
-console.log(''); console.log(''); console.log('');
-console.log(ast);
-console.log(''); console.log(''); console.log('');
+// console.log(code);
+// console.log(ast);
 console.log(regeneratedCode);
 
 // interface H{h:string;}const x:string=`Hello, ${"Hello"} Deno SWC!`;switch(x){case "value":console.log(x);break;default:break}
