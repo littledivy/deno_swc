@@ -18,7 +18,7 @@ switch (x) {
 }
 `;
 
-const ast = parse(code, { target: "es2019", syntax: "typescript", comments: true });
+const ast = parse(code, { target: "es2019", syntax: "typescript", comments: false });
 const regeneratedCode = print(ast, {
   minify: true,
   module: {
