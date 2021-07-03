@@ -19,6 +19,7 @@ export function parse(source: string, opts: ParseOptions): Program {
 }
 
 // TODO(littledivy): Typings for `program`
+// deno-lint-ignore no-explicit-any
 export function print(program: any, opts?: Config): { code: string } {
   return printSync(program, opts || {});
 }

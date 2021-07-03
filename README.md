@@ -17,25 +17,9 @@
 ## Usage [example code](./examples/print.ts)
 
 ```typescript
-import { parse, print } from "https://raw.githubusercontent.com/nestdotland/deno_swc/master/mod.ts";
+import { parse, print } from "https://x.nest.land/swc@0.0.6/mod.ts";
 
-const code: string = `
-interface H {
-  h: string;
-}
-
-const x: string = \`Hello, $\{"Hello"} Deno SWC!\`;
-
-switch (x) {
-  case "value":
-    console.log(x);
-    break;
-
-  default:
-    break;
-}
-`;
-
+const code = `const x: string = "Hello, Deno SWC!"`;
 const ast = parse(code, { target: "es2019", syntax: "typescript", comments: false });
 const regeneratedCode = print(ast, {
   minify: true,
@@ -43,6 +27,21 @@ const regeneratedCode = print(ast, {
     type: "commonjs"
   },
 }).code;
+
+// {
+//   type: "Module",
+//   span: { start: 0, end: 36, ctxt: 0 },
+//   body: [
+//     {
+//       type: "VariableDeclaration",
+//       span: [Object],
+//       kind: "const",
+//       declare: false,
+//       declarations: [Array]
+//     }
+//   ],
+//   interpreter: null
+// }
 
 // console.log(code);
 // console.log(ast);

@@ -193,6 +193,7 @@ export interface Options extends Config {
 
 export interface CallerOptions {
   name: string;
+  // deno-lint-ignore no-explicit-any
   [key: string]: any;
 }
 
@@ -234,6 +235,7 @@ export interface EnvConfig {
    */
   coreJs?: string;
 
+  // deno-lint-ignore no-explicit-any
   targets?: any;
 
   shippedProposals?: boolean;
@@ -356,13 +358,13 @@ export interface ReactConfig {
    *
    * Defaults to `React.createElement`.
    */
-  pragma: String;
+  pragma: string;
   /**
    * Replace the component used when compiling JSX fragments.
    *
    * Defaults to `React.Fragment`
    */
-  pragmaFrag: String;
+  pragmaFrag: string;
   /**
    * Toggles whether or not to throw an error if a XML namespaced tag name is used. For example:
    * `<f:image />`
@@ -442,7 +444,7 @@ export interface BaseModuleConfig {
    *
    * Defaults to `true`.
    */
-  strict_mode?: boolean;
+  "strict_mode"?: boolean;
 
   /**
    * Changes Babel's compiled import statements to be lazily evaluated when their imported bindings are used for the first time.
@@ -517,6 +519,7 @@ export interface Output {
   map?: string;
 }
 
+// deno-lint-ignore no-empty-interface
 export interface MatchPattern {}
 
 // -------------------------------
@@ -546,7 +549,7 @@ export interface Class extends HasSpan, HasDecorator {
 
   superClass?: Expression;
 
-  is_abstract: boolean;
+  "is_abstract": boolean;
 
   typeParams: TsTypeParameterDeclaration;
 
@@ -568,16 +571,16 @@ export interface ClassPropertyBase extends Node, HasSpan, HasDecorator {
 
   typeAnnotation?: TsTypeAnnotation;
 
-  is_static: boolean;
+  "is_static": boolean;
 
   computed: boolean;
 
   accessibility?: Accessibility;
 
   /// Typescript extension.
-  is_abstract: boolean;
+  "is_abstract": boolean;
 
-  is_optional: boolean;
+  "is_optional": boolean;
 
   readonly: boolean;
 
@@ -612,7 +615,7 @@ export interface Constructor extends Node, HasSpan {
 
   accessibility?: Accessibility;
 
-  is_optional: boolean;
+  "is_optional": boolean;
 }
 
 export interface ClassMethodBase extends Node, HasSpan {
@@ -620,13 +623,13 @@ export interface ClassMethodBase extends Node, HasSpan {
 
   kind: MethodKind;
 
-  is_static: boolean;
+  "is_static": boolean;
 
   accessibility?: Accessibility;
 
-  is_abstract: boolean;
+  "is_abstract": boolean;
 
-  is_optional: boolean;
+  "is_optional": boolean;
 }
 
 export interface ClassMethod extends ClassMethodBase {
@@ -1109,7 +1112,7 @@ export interface StringLiteral extends Node, HasSpan {
   type: "StringLiteral";
 
   value: string;
-  has_escape: boolean;
+  "has_escape": boolean;
 }
 
 export interface BooleanLiteral extends Node, HasSpan {
@@ -1990,7 +1993,7 @@ export interface TsEnumDeclaration extends Node, HasSpan {
   type: "TsEnumDeclaration";
 
   declare: boolean;
-  is_const: boolean;
+  "is_const": boolean;
   id: Identifier;
   member: TsEnumMember[];
 }
@@ -2039,7 +2042,7 @@ export interface TsImportEqualsDeclaration extends Node, HasSpan {
   type: "TsImportEqualsDeclaration";
 
   declare: boolean;
-  is_export: boolean;
+  "is_export": boolean;
   id: Identifier;
   moduleRef: TsModuleReference;
 }
