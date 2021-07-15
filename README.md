@@ -7,7 +7,7 @@
   </a>
   <h3 align="center">deno_swc</h3>
 
-  <p align="center">
+<p align="center">
     The SWC compiler for Deno.
  </p>
 </p>
@@ -19,9 +19,12 @@
 ## Usage [example code](./examples/print.ts)
 
 ```typescript
-import { parse, print } from "https://raw.githubusercontent.com/tamusjroyce/deno_swc/master/mod.ts";
+import {
+  parse,
+  print,
+} from "https://raw.githubusercontent.com/tamusjroyce/deno_swc/master/mod.ts";
 
-const code: string = `
+const code = `
 interface H {
   h: string;
 }
@@ -42,14 +45,18 @@ const ast = parse(code, { target: "es2019", syntax: "typescript" });
 const regeneratedCode = print(ast, {
   minify: true,
   module: {
-    type: "commonjs"
+    type: "commonjs",
   },
 }).code;
 
 console.log(code);
-console.log(''); console.log(''); console.log('');
+console.log("");
+console.log("");
+console.log("");
 console.log(ast);
-console.log(''); console.log(''); console.log('');
+console.log("");
+console.log("");
+console.log("");
 console.log(regeneratedCode);
 
 // interface H{h:string;}const x:string=`Hello, ${"Hello"} Deno SWC!`;switch(x){case "value":console.log(x);break;default:break}
@@ -57,4 +64,5 @@ console.log(regeneratedCode);
 
 ## Copyright
 
-deno_swc is licensed under the MIT license. Please see the [LICENSE](LICENSE) file.
+deno_swc is licensed under the MIT license. Please see the [LICENSE](LICENSE)
+file.
