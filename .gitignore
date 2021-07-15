@@ -1,3 +1,5 @@
 target/
 swc_wasm/pkg
-
+builds/
+*.exe
+config.toml

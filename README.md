@@ -5,7 +5,7 @@
   </a>
   <h3 align="center">deno_swc</h3>
 
-  <p align="center">
+<p align="center">
     The SWC compiler for Deno.
  </p>
 </p>
@@ -20,11 +20,15 @@
 import { parse, print } from "https://x.nest.land/swc@0.0.6/mod.ts";
 
 const code = `const x: string = "Hello, Deno SWC!"`;
-const ast = parse(code, { target: "es2019", syntax: "typescript", comments: false });
+const ast = parse(code, {
+  target: "es2019",
+  syntax: "typescript",
+  comments: false,
+});
 const regeneratedCode = print(ast, {
   minify: true,
   module: {
-    type: "commonjs"
+    type: "commonjs",
   },
 }).code;
 
@@ -52,4 +56,5 @@ console.log(regeneratedCode);
 
 ## Copyright
 
-deno_swc is licensed under the MIT license. Please see the [LICENSE](LICENSE) file.
+deno_swc is licensed under the MIT license. Please see the [LICENSE](LICENSE)
+file.
