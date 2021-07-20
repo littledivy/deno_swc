@@ -28,14 +28,6 @@ jobs:
       - uses: denolib/setup-deno@master
         with:
           deno-version: v1.5.0
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}2-cargo-${{ hashFiles('**/Cargo.lock') }}
-
       - name: Install Rust
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       - name: Install nightly Rust
