@@ -180,7 +180,7 @@ export interface Options extends Config {
    * Destination path. Note that this value is used only to fix source path
    * of source map files and swc does not write output to this path.
    */
-  outputPath?: string
+  outputPath?: string;
 }
 
 export interface CallerOptions {
@@ -280,11 +280,11 @@ export interface JscConfig {
   /**
    * Keep class names.
    */
-  keepClassNames?: boolean
+  keepClassNames?: boolean;
 
   paths?: {
-    [from: string]: [string]
-  }
+    [from: string]: [string];
+  };
 }
 
 export type JscTarget =
@@ -447,12 +447,12 @@ export interface ReactConfig {
   /**
    * jsx runtime
    */
-  runtime: 'automatic' | 'classic'
+  runtime: "automatic" | "classic";
 
   /**
    * Declares the module specifier to be used for importing the `jsx` and `jsxs` factory functions when using `runtime` 'automatic'
    */
-  importSource: string
+  importSource: string;
 }
 /**
  *  - `import { DEBUG } from '@ember/env-flags';`
@@ -590,7 +590,7 @@ export interface Output {
   map?: string;
 }
 
-export interface MatchPattern { }
+export interface MatchPattern {}
 
 // -------------------------------
 // ---------- Ast nodes ----------
@@ -808,7 +808,7 @@ export type Expression =
   | OptionalChainingExpression
   | Invalid;
 
-interface ExpressionBase extends Node, HasSpan { }
+interface ExpressionBase extends Node, HasSpan {}
 
 export interface OptionalChainingExpression extends ExpressionBase {
   type: "OptionalChainingExpression";
@@ -829,8 +829,8 @@ export interface ArrayExpression extends ExpressionBase {
 }
 
 export interface ExprOrSpread {
-  spread?: Span,
-  expression: Expression
+  spread?: Span;
+  expression: Expression;
 }
 
 export interface ObjectExpression extends ExpressionBase {
@@ -2154,4 +2154,3 @@ export type Accessibility = "public" | "protected" | "private";
 export interface Invalid extends Node, HasSpan {
   type: "Invalid";
 }
-
