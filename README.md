@@ -5,7 +5,7 @@
   </a>
   <h3 align="center">deno_swc</h3>
 
-  <p align="center">
+<p align="center">
     The SWC compiler for Deno.
  </p>
 </p>
@@ -14,14 +14,23 @@
 ![dev-ci](https://github.com/nestdotland/deno_swc/workflows/dev-ci/badge.svg)
 ![](https://img.shields.io/github/v/release/nestdotland/deno_swc?style=plastic)
 
-## Usage
+## Usage [example code](./examples/print.ts)
 
 ```typescript
 import { parse, print } from "https://x.nest.land/swc@0.0.6/mod.ts";
 
-const ast = parse(`const x: string = "Hello, Deno SWC!"`,{
-  syntax: "typescript"
+const code = `const x: string = "Hello, Deno SWC!"`;
+const ast = parse(code, {
+  target: "es2019",
+  syntax: "typescript",
+  comments: false,
 });
+const regeneratedCode = print(ast, {
+  minify: true,
+  module: {
+    type: "commonjs",
+  },
+}).code;
 
 // {
 //   type: "Module",
@@ -38,14 +47,14 @@ const ast = parse(`const x: string = "Hello, Deno SWC!"`,{
 //   interpreter: null
 // }
 
-let code = print(ast, {
-  minify: true,
-  isModule: true,
-}).code;
+// console.log(code);
+// console.log(ast);
+console.log(regeneratedCode);
 
-// const x: string = "Hello, Deno SWC!";
+// interface H{h:string;}const x:string=`Hello, ${"Hello"} Deno SWC!`;switch(x){case "value":console.log(x);break;default:break}
 ```
 
 ## Copyright
 
-deno_swc is licensed under the MIT license. Please see the [LICENSE](LICENSE) file.
+deno_swc is licensed under the MIT license. Please see the [LICENSE](LICENSE)
+file.
