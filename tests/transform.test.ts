@@ -1,4 +1,4 @@
-import { transform } from "../mod.ts";
+import { transform, parse, print } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("transform (no error)", () => {
@@ -13,3 +13,4 @@ Deno.test("transform (no error)", () => {
   });
   assertEquals(result.code.trim(), "const x = 2;\nconsole.log(x);");
 });
+
