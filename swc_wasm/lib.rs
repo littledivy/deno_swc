@@ -5,14 +5,14 @@ use std::{
     sync::{Arc, RwLock},
 };
 use swc::{
-    config::{Options, ParseOptions, SourceMapsConfig},
+    config::{JscTarget, Options, ParseOptions, SourceMapsConfig},
     Compiler,
 };
 use swc_common::{
     errors::{DiagnosticBuilder, Emitter, Handler, SourceMapperDyn},
     FileName, FilePathMapping, SourceMap,
 };
-use swc_ecma_ast::Program;
+use swc_ecmascript::ast::Program;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(js_name = "parseSync")]
@@ -21,7 +21,7 @@ pub fn parse_sync(s: &str, opts: JsValue) -> Result<JsValue, JsValue> {
 
     let opts: ParseOptions = opts
         .into_serde()
-        .map_err(|err| format!("failed to parse swc options: {}", err))?;
+        .map_err(|err| format!("failed to parse options: {}", err))?;
 
     let (c, errors) = compiler();
 
@@ -50,11 +50,13 @@ pub fn print_sync(s: JsValue, opts: JsValue) -> Result<JsValue, JsValue> {
     let s = c
         .print(
             &program,
+            None,
+            opts.codegen_target().unwrap_or(JscTarget::Es2020),
             opts.source_maps
                 .clone()
                 .unwrap_or(SourceMapsConfig::Bool(false)),
             None,
-            opts.config.unwrap_or_default().minify.unwrap_or_default(),
+            opts.config.minify.unwrap_or_default(),
         )
         .map_err(|err| format!("failed to print: {}\n{}", err, errors))?;
 
@@ -101,15 +103,15 @@ fn codemap() -> Arc<SourceMap> {
 fn new_handler(_cm: Arc<SourceMapperDyn>) -> (Arc<Handler>, BufferedError) {
     let e = BufferedError::default();
 
-    let handler = Handler::with_emitter(true, false, Box::new(MyEmiter::default()));
+    let handler = Handler::with_emitter(true, false, Box::new(MyEmitter::default()));
 
     (Arc::new(handler), e)
 }
 
 #[derive(Clone, Default)]
-struct MyEmiter(BufferedError);
+struct MyEmitter(BufferedError);
 
-impl Emitter for MyEmiter {
+impl Emitter for MyEmitter {
     fn emit(&mut self, db: &DiagnosticBuilder<'_>) {
         let z = &(self.0).0;
         for msg in &db.message {
