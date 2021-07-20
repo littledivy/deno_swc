@@ -21,7 +21,6 @@ swc_ecmascript = { git = "https://github.com/swc-project/swc", rev = "d6454ad" }
 swc_common = { git = "https://github.com/swc-project/swc", rev = "d6454ad" }
 wasm-bindgen = {version = "0.2", features = ["serde-serialize"]}
 wasm-bindgen-futures = "0.4.8"
-
 string_cache = "0.8.1"
 
 
