@@ -10,23 +10,20 @@ crate-type = ["cdylib"]
 path = "lib.rs"
 
 [dependencies]
-swc = { git = "https://github.com/swc-project/swc", rev = "6b03c65" }
-swc_ecma_ast = { git = "https://github.com/swc-project/swc", rev = "6b03c65" }
-swc_common = { git = "https://github.com/swc-project/swc", rev = "6b03c65" }
-anyhow = "1.0.31"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-fxhash = "0.2"
-wasm-bindgen = { version = "0.2.64", features = ["serde-serialize"] }
 wee_alloc = { version = "0.4.5", optional = true }
-js-sys = "0.3.44"
 console_error_panic_hook = "0.1.6"
-sourcemap = "6.0.1"
 once_cell = "1.3.1"
+path-clean = "0.1"
+serde = {version = "1", features = ["derive"]}
+serde_json = "1"
+swc = { git = "https://github.com/swc-project/swc", rev = "d6454ad" }
+swc_ecmascript = { git = "https://github.com/swc-project/swc", rev = "d6454ad" }
+swc_common = { git = "https://github.com/swc-project/swc", rev = "d6454ad" }
+wasm-bindgen = {version = "0.2", features = ["serde-serialize"]}
+wasm-bindgen-futures = "0.4.8"
+string_cache = "0.8.1"
 
-[profile.release]
-lto = true
-opt-level = "z"
 
 [features]
 default = ["wee_alloc"]
+

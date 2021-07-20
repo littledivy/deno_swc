@@ -2,6 +2,7 @@ export interface Plugin {
   (module: Program): Program;
 }
 
+// TODO:
 export type ParseOptions = ParserConfig & {
   comments?: boolean;
   script?: boolean;
@@ -160,21 +161,6 @@ export interface Options extends Config {
   inputSourceMap?: boolean | string;
 
   /**
-   * - true to generate a sourcemap for the code and include it in the result object.
-   * - "inline" to generate a sourcemap and append it as a data URL to the end of the code, but not include it in the result object.
-   * - "both" is the same as inline, but will include the map in the result object.
-   *
-   * `swc-cli` overloads some of these to also affect how maps are written to disk:
-   *
-   * - true will write the map to a .map file on disk
-   * - "inline" will write the file directly, so it will have a data: containing the map
-   * - "both" will write the file with a data: URL and also a .map.
-   * - Note: These options are bit weird, so it may make the most sense to just use true
-   *  and handle the rest in your own code, depending on your use case.
-   */
-  sourceMaps?: boolean | "inline" | "both";
-
-  /**
    * The name to use for the file inside the source map object.
    *
    * Defaults to `path.basename(opts.filenameRelative)` when available, or `"unknown"`.
@@ -189,11 +175,16 @@ export interface Options extends Config {
   plugin?: Plugin;
 
   isModule?: boolean;
+
+  /**
+   * Destination path. Note that this value is used only to fix source path
+   * of source map files and swc does not write output to this path.
+   */
+  outputPath?: string;
 }
 
 export interface CallerOptions {
   name: string;
-  // deno-lint-ignore no-explicit-any
   [key: string]: any;
 }
 
@@ -203,10 +194,31 @@ export type Swcrc = Config | Config[];
  * .swcrc
  */
 export interface Config {
+  /**
+   * Note: The type is string beacuse it follow rust's regex syntax.
+   */
+  test?: string | string[];
+  /**
+   * Note: The type is string beacuse it follow rust's regex syntax.
+   */
+  exclude?: string | string[];
   env?: EnvConfig;
   jsc?: JscConfig;
   module?: ModuleConfig;
   minify?: boolean;
+
+  /**
+   * - true to generate a sourcemap for the code and include it in the result object.
+   * - "inline" to generate a sourcemap and append it as a data URL to the end of the code, but not include it in the result object.
+   *
+   * `swc-cli` overloads some of these to also affect how maps are written to disk:
+   *
+   * - true will write the map to a .map file on disk
+   * - "inline" will write the file directly, so it will have a data: containing the map
+   * - Note: These options are bit weird, so it may make the most sense to just use true
+   *  and handle the rest in your own code, depending on your use case.
+   */
+  sourceMaps?: boolean | "inline";
 }
 
 /**
@@ -235,8 +247,9 @@ export interface EnvConfig {
    */
   coreJs?: string;
 
-  // deno-lint-ignore no-explicit-any
   targets?: any;
+
+  path?: string;
 
   shippedProposals?: boolean;
 
@@ -263,6 +276,15 @@ export interface JscConfig {
    * Defaults to `es3` (which enableds **all** pass).
    */
   target?: JscTarget;
+
+  /**
+   * Keep class names.
+   */
+  keepClassNames?: boolean;
+
+  paths?: {
+    [from: string]: [string];
+  };
 }
 
 export type JscTarget =
@@ -272,7 +294,9 @@ export type JscTarget =
   | "es2016"
   | "es2017"
   | "es2018"
-  | "es2019";
+  | "es2019"
+  | "es2020"
+  | "es2021";
 
 export type ParserConfig = TsParserConfig | EsParserConfig;
 export interface TsParserConfig {
@@ -296,9 +320,11 @@ export interface EsParserConfig {
   /**
    * Defaults to false.
    */
-  jsc?: boolean;
+  jsx?: boolean;
   /**
-   * Defaults to `false`. This is not implemented yet.
+   * Defaults to `false`.
+   *
+   * @deprecated Always true because it's in ecmascript spec.
    */
   numericSeparator?: boolean;
   /**
@@ -307,6 +333,8 @@ export interface EsParserConfig {
   classPrivateProperty?: boolean;
   /**
    * Defaults to `false`
+   *
+   * @deprecated Always true because it's in ecmascript spec.
    */
   privateMethod?: boolean;
   /**
@@ -331,8 +359,22 @@ export interface EsParserConfig {
   dynamicImport?: boolean;
   /**
    * Defaults to `false`
+   *
+   * @deprecated Always true because it's in ecmascript spec.
    */
   nullishCoalescing?: boolean;
+  /**
+   * Defaults to `false`
+   */
+  exportDefaultFrom?: boolean;
+  /**
+   * Defaults to `false`
+   */
+  exportNamespaceFrom?: boolean;
+  /**
+   * Defaults to `false`
+   */
+  importMeta?: boolean;
 }
 
 /**
@@ -350,6 +392,16 @@ export interface TransformConfig {
    * Defaults to null, which skips optimizer pass.
    */
   optimizer?: OptimizerConfig;
+
+  /**
+   * https://swc.rs/docs/configuring-swc.html#jsctransformlegacydecorator
+   */
+  legacyDecorator?: boolean;
+
+  /**
+   * https://swc.rs/docs/configuring-swc.html#jsctransformdecoratormetadata
+   */
+  decoratorMetadata?: boolean;
 }
 
 export interface ReactConfig {
@@ -386,6 +438,21 @@ export interface ReactConfig {
    * Use `Object.assign()` instead of `_extends`. Defaults to false.
    */
   useBuiltins: boolean;
+
+  /**
+   * Enable fast refresh feature for React app
+   */
+  refresh: boolean;
+
+  /**
+   * jsx runtime
+   */
+  runtime: "automatic" | "classic";
+
+  /**
+   * Declares the module specifier to be used for importing the `jsx` and `jsxs` factory functions when using `runtime` 'automatic'
+   */
+  importSource: string;
 }
 /**
  *  - `import { DEBUG } from '@ember/env-flags';`
@@ -401,8 +468,12 @@ export interface ConstModulesConfig {
   };
 }
 
+/// https://swc.rs/docs/configuring-swc.html#jsctransformoptimizerjsonify
 export interface OptimizerConfig {
+  /// https://swc.rs/docs/configuring-swc.html#jsctransformoptimizerglobals
   globals?: GlobalPassOption;
+  /// https://swc.rs/docs/configuring-swc.html#jsctransformoptimizerjsonify
+  jsonify?: { minCost: number };
 }
 
 /**
@@ -444,7 +515,7 @@ export interface BaseModuleConfig {
    *
    * Defaults to `true`.
    */
-  "strict_mode"?: boolean;
+  strict_mode?: boolean;
 
   /**
    * Changes Babel's compiled import statements to be lazily evaluated when their imported bindings are used for the first time.
@@ -519,7 +590,6 @@ export interface Output {
   map?: string;
 }
 
-// deno-lint-ignore no-empty-interface
 export interface MatchPattern {}
 
 // -------------------------------
@@ -549,7 +619,7 @@ export interface Class extends HasSpan, HasDecorator {
 
   superClass?: Expression;
 
-  "is_abstract": boolean;
+  is_abstract: boolean;
 
   typeParams: TsTypeParameterDeclaration;
 
@@ -571,16 +641,16 @@ export interface ClassPropertyBase extends Node, HasSpan, HasDecorator {
 
   typeAnnotation?: TsTypeAnnotation;
 
-  "is_static": boolean;
+  is_static: boolean;
 
   computed: boolean;
 
   accessibility?: Accessibility;
 
   /// Typescript extension.
-  "is_abstract": boolean;
+  is_abstract: boolean;
 
-  "is_optional": boolean;
+  is_optional: boolean;
 
   readonly: boolean;
 
@@ -615,7 +685,7 @@ export interface Constructor extends Node, HasSpan {
 
   accessibility?: Accessibility;
 
-  "is_optional": boolean;
+  is_optional: boolean;
 }
 
 export interface ClassMethodBase extends Node, HasSpan {
@@ -623,13 +693,13 @@ export interface ClassMethodBase extends Node, HasSpan {
 
   kind: MethodKind;
 
-  "is_static": boolean;
+  is_static: boolean;
 
   accessibility?: Accessibility;
 
-  "is_abstract": boolean;
+  is_abstract: boolean;
 
-  "is_optional": boolean;
+  is_optional: boolean;
 }
 
 export interface ClassMethod extends ClassMethodBase {
@@ -664,7 +734,7 @@ export type Declaration =
 export interface FunctionDeclaration extends Fn {
   type: "FunctionDeclaration";
 
-  ident: Identifier;
+  identifier: Identifier;
 
   declare: boolean;
 }
@@ -687,7 +757,7 @@ export interface VariableDeclaration extends Node, HasSpan {
   declarations: VariableDeclarator[];
 }
 
-export type VariableDeclarationKind = "get" | "let" | "const";
+export type VariableDeclarationKind = "var" | "let" | "const";
 
 export interface VariableDeclarator extends Node, HasSpan {
   type: "VariableDeclarator";
@@ -731,8 +801,8 @@ export type Expression =
   | JSXElement
   | JSXFragment
   | TsTypeAssertion
+  | TsConstAssertion
   | TsNonNullExpression
-  | TsTypeCastExpression
   | TsAsExpression
   | PrivateName
   | OptionalChainingExpression
@@ -755,7 +825,12 @@ export interface ThisExpression extends ExpressionBase {
 export interface ArrayExpression extends ExpressionBase {
   type: "ArrayExpression";
 
-  elements: (Expression | SpreadElement | undefined)[];
+  elements: (ExprOrSpread | undefined)[];
+}
+
+export interface ExprOrSpread {
+  spread?: Span;
+  expression: Expression;
 }
 
 export interface ObjectExpression extends ExpressionBase {
@@ -765,7 +840,7 @@ export interface ObjectExpression extends ExpressionBase {
 }
 
 export interface Argument {
-  spread: Span;
+  spread?: Span;
   expression: Expression;
 }
 
@@ -917,20 +992,20 @@ export interface AwaitExpression extends ExpressionBase {
   argument: Expression;
 }
 
-export interface TplBase {
+export interface TemplateLiteral extends ExpressionBase {
+  type: "TemplateLiteral";
+
   expressions: Expression[];
 
   quasis: TemplateElement[];
 }
 
-export interface TemplateLiteral extends ExpressionBase, TplBase {
-  type: "TemplateLiteral";
-}
-
-export interface TaggedTemplateExpression extends ExpressionBase, TplBase {
+export interface TaggedTemplateExpression extends ExpressionBase {
   type: "TaggedTemplateExpression";
 
   tag: Expression;
+
+  template: TemplateLiteral;
 
   typeParameters: TsTypeParameterInstantiation;
 }
@@ -1029,7 +1104,7 @@ export interface JSXOpeningElement extends Node, HasSpan {
 
   name: JSXElementName;
 
-  attrs?: JSXAttributeOrSpread[];
+  attributes?: JSXAttributeOrSpread[];
 
   selfClosing: boolean;
 
@@ -1112,7 +1187,7 @@ export interface StringLiteral extends Node, HasSpan {
   type: "StringLiteral";
 
   value: string;
-  "has_escape": boolean;
+  has_escape: boolean;
 }
 
 export interface BooleanLiteral extends Node, HasSpan {
@@ -1164,15 +1239,10 @@ export interface ExportDeclaration extends Node, HasSpan {
 export interface ImportDeclaration extends Node, HasSpan {
   type: "ImportDeclaration";
 
-  specifiers: ImporSpecifier[];
+  specifiers: ImportSpecifier[];
 
   source: StringLiteral;
 }
-
-export type ImporSpecifier =
-  | ImportDefaultSpecifier
-  | NamedImportSpecifier
-  | ImportNamespaceSpecifier;
 
 export interface ExportAllDeclaration extends Node, HasSpan {
   type: "ExportAllDeclaration";
@@ -1237,7 +1307,7 @@ export interface ImportNamespaceSpecifier extends Node, HasSpan {
 export interface NamedImportSpecifier extends Node, HasSpan {
   type: "ImportSpecifier";
   local: Identifier;
-  imported: Identifier;
+  imported: Identifier | null;
 }
 
 export type ExportSpecifier =
@@ -1364,7 +1434,7 @@ export interface ArrayPattern extends Node, HasSpan, PatternBase {
 export interface ObjectPattern extends Node, HasSpan, PatternBase {
   type: "ObjectPattern";
 
-  props: ObjectPatternProperty[];
+  properties: ObjectPatternProperty[];
 }
 
 export interface AssignmentPattern extends Node, HasSpan, PatternBase {
@@ -1655,13 +1725,6 @@ export interface TsTypeParameterInstantiation extends Node, HasSpan {
   params: TsType[];
 }
 
-export interface TsTypeCastExpression extends Node, HasSpan {
-  type: "TsTypeCastExpression";
-
-  expression: Expression;
-  typeAnnotation: TsTypeAnnotation;
-}
-
 export interface TsParameterProperty extends Node, HasSpan, HasDecorator {
   type: "TsParameterProperty";
 
@@ -1680,13 +1743,6 @@ export interface TsQualifiedName extends Node {
 }
 
 export type TsEntityName = TsQualifiedName | Identifier;
-
-export type TsSignatureDeclaration =
-  | TsCallSignatureDeclaration
-  | TsConstructSignatureDeclaration
-  | TsMethodSignature
-  | TsFunctionType
-  | TsConstructorType;
 
 export type TsTypeElement =
   | TsCallSignatureDeclaration
@@ -1993,9 +2049,9 @@ export interface TsEnumDeclaration extends Node, HasSpan {
   type: "TsEnumDeclaration";
 
   declare: boolean;
-  "is_const": boolean;
+  is_const: boolean;
   id: Identifier;
-  member: TsEnumMember[];
+  members: TsEnumMember[];
 }
 
 export interface TsEnumMember extends Node, HasSpan {
@@ -2042,7 +2098,7 @@ export interface TsImportEqualsDeclaration extends Node, HasSpan {
   type: "TsImportEqualsDeclaration";
 
   declare: boolean;
-  "is_export": boolean;
+  is_export: boolean;
   id: Identifier;
   moduleRef: TsModuleReference;
 }
@@ -2079,6 +2135,12 @@ export interface TsTypeAssertion extends ExpressionBase {
 
   expression: Expression;
   typeAnnotation: TsType;
+}
+
+export interface TsConstAssertion extends ExpressionBase {
+  type: "TsConstAssertion";
+
+  expression: Expression;
 }
 
 export interface TsNonNullExpression extends ExpressionBase {

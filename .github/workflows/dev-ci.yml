@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: denolib/setup-deno@master
         with:
-          deno-version: v1.5.0
+          deno-version: 1.12.0
       - name: Format Check
         run: deno fmt --check
 
@@ -28,18 +28,9 @@ jobs:
       - uses: denolib/setup-deno@master
         with:
           deno-version: v1.5.0
-      - uses: actions/cache@v2
+      - uses: hecrj/setup-rust-action@v1
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Install Rust
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      - name: Install nightly Rust
-        run: rustup install nightly
+          rust-version: nightly
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Build swc_deno
