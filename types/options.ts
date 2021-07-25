@@ -185,6 +185,7 @@ export interface Options extends Config {
 
 export interface CallerOptions {
   name: string;
+  // deno-lint-ignore no-explicit-any
   [key: string]: any;
 }
 
@@ -247,6 +248,7 @@ export interface EnvConfig {
    */
   coreJs?: string;
 
+  // deno-lint-ignore no-explicit-any
   targets?: any;
 
   path?: string;
@@ -515,6 +517,7 @@ export interface BaseModuleConfig {
    *
    * Defaults to `true`.
    */
+  // deno-lint-ignore camelcase
   strict_mode?: boolean;
 
   /**
@@ -590,6 +593,7 @@ export interface Output {
   map?: string;
 }
 
+// deno-lint-ignore no-empty-interface
 export interface MatchPattern {}
 
 // -------------------------------
@@ -619,6 +623,7 @@ export interface Class extends HasSpan, HasDecorator {
 
   superClass?: Expression;
 
+  // deno-lint-ignore camelcase
   is_abstract: boolean;
 
   typeParams: TsTypeParameterDeclaration;
@@ -641,6 +646,7 @@ export interface ClassPropertyBase extends Node, HasSpan, HasDecorator {
 
   typeAnnotation?: TsTypeAnnotation;
 
+  // deno-lint-ignore camelcase
   is_static: boolean;
 
   computed: boolean;
@@ -648,12 +654,12 @@ export interface ClassPropertyBase extends Node, HasSpan, HasDecorator {
   accessibility?: Accessibility;
 
   /// Typescript extension.
+  // deno-lint-ignore camelcase
   is_abstract: boolean;
-
+  // deno-lint-ignore camelcase
   is_optional: boolean;
 
   readonly: boolean;
-
   definite: boolean;
 }
 
@@ -685,6 +691,7 @@ export interface Constructor extends Node, HasSpan {
 
   accessibility?: Accessibility;
 
+  // deno-lint-ignore camelcase
   is_optional: boolean;
 }
 
@@ -693,12 +700,15 @@ export interface ClassMethodBase extends Node, HasSpan {
 
   kind: MethodKind;
 
+  // deno-lint-ignore camelcase
   is_static: boolean;
 
   accessibility?: Accessibility;
 
+  // deno-lint-ignore camelcase
   is_abstract: boolean;
 
+  // deno-lint-ignore camelcase
   is_optional: boolean;
 }
 
@@ -1187,6 +1197,7 @@ export interface StringLiteral extends Node, HasSpan {
   type: "StringLiteral";
 
   value: string;
+  // deno-lint-ignore camelcase
   has_escape: boolean;
 }
 
@@ -2049,6 +2060,7 @@ export interface TsEnumDeclaration extends Node, HasSpan {
   type: "TsEnumDeclaration";
 
   declare: boolean;
+  // deno-lint-ignore camelcase
   is_const: boolean;
   id: Identifier;
   members: TsEnumMember[];
@@ -2098,6 +2110,7 @@ export interface TsImportEqualsDeclaration extends Node, HasSpan {
   type: "TsImportEqualsDeclaration";
 
   declare: boolean;
+  // deno-lint-ignore camelcase
   is_export: boolean;
   id: Identifier;
   moduleRef: TsModuleReference;

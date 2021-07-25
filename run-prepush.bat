@@ -9,7 +9,7 @@ deno run ./tools/print-version.ts
 .\\call .\\tools\\e2e-test.sh
 
 echo .
-cat .\\tools\\README.posix.md
+cat .\\tools\\README.windows.md
 echo .
 
 REM TODO: remove lint-local.sh and format-local.sh after getting them to `cd swc-wasm`, run rust tools, `cd ..` without breaking CI 
