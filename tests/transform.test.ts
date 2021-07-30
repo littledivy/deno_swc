@@ -1,8 +1,9 @@
-import { parse, print, transform } from "../mod.ts";
+import { transform } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 Deno.test("transform (no error)", () => {
   const result = transform("const x: number = 2; console.log(x);", {
+    // deno-lint-ignore ban-ts-comment
     // @ts-ignore
     "jsc": {
       "target": "es2016",
