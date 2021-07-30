@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: denolib/setup-deno@master
+        with:
+          deno-version: 1.12.2
+      - name: Format Check
+        run: deno fmt --check
+
+  swc-deno-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: denolib/setup-deno@master
+        with:
+          deno-version: 1.12.2
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          # TODO(littledivy): Maybe lock to stable rustc?
+          rust-version: nightly
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - name: Build
+        run: make
+      - name: Test
+        run: make test
