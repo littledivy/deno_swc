@@ -1,8 +1,8 @@
 name: swc
 description: The SWC compiler for Deno
 stable: true
-repository: https://github.com/nestdotland/deno_swc
-version: 0.1.1
+repository: 'https://github.com/nestdotland/deno_swc'
+version: 0.1.2
 files:
   - README.md
   - ./swc_wasm/wasm.js
@@ -13,8 +13,11 @@ files:
   - ./examples/**/*
 ignore:
   - .git
-  # Don't publish cargo build artifacts!
   - ./swc_wasm/target/**/*
 checkFormat: make fmt
 checkLint: make lint
 checkTests: false
+check: true
+entry: ./mod.ts
+homepage: 'https://github.com/nestdotland/deno_swc'
+unlisted: false
