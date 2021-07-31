@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <a href="https://github.com/divy-beta/deno_swc">
+  <a href="https://github.com/nestdotland/deno_swc">
     <img src="https://raw.githubusercontent.com/nestdotland/deno_swc/master/assets/deno_swc.png" alt="deno_swc logo" width="310">
   </a>
   <h3 align="center">deno_swc</h3>
@@ -18,7 +18,7 @@
 `parse()`
 
 ```typescript
-import { parse, print } from "https://x.nest.land/swc@0.0.6/mod.ts";
+import { parse, print } from "https://x.nest.land/swc@0.1.1/mod.ts";
 
 const code = `const x: string = "Hello, Deno SWC!"`;
 
