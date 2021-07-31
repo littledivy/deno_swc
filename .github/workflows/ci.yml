@@ -15,7 +15,7 @@ jobs:
         with:
           deno-version: 1.12.2
       - name: Format Check
-        run: deno fmt --check
+        run: deno fmt --check --ignore=swc_wasm
 
   swc-deno-test:
     runs-on: ubuntu-latest
