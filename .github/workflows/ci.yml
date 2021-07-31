@@ -30,7 +30,26 @@ jobs:
           rust-version: nightly
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      
+      - name: Cache Cargo home
+        uses: actions/cache@v2
+        with:
+          # See https://doc.rust-lang.org/cargo/guide/cargo-home.html#caching-the-cargo-home-in-ci
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+          key: f-cargo-home-${{ matrix.os }}-${{ hashFiles('Cargo.lock') }}
+
+      - name: Cache build output
+        uses: actions/cache@03e00da99d75a2204924908e1cca7902cafce66b
+        with:
+          path: swc_wasm/target
+          key: |
+            f-cargo-target-${{ matrix.os }}-${{ matrix.profile }}-
+      
       - name: Build
         run: make
+      
       - name: Test
         run: make test
