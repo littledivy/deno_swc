@@ -1,9 +1,4 @@
-import {
-  parseSync,
-  printSync,
-  // source,
-  transformSync,
-} from "./swc_wasm/wasm.js";
+import { parseSync, printSync, transformSync } from "./swc_wasm/wasm.js";
 
 import {
   Config,
@@ -11,11 +6,6 @@ import {
   Program,
   TransformConfig,
 } from "./types/options.ts";
-
-//const start = performance.now();
-// await init(source);
-//const end = performance.now() - start;
-//console.log(end)
 
 export function parse(source: string, opts: ParseOptions): Program {
   return parseSync(source, opts);
