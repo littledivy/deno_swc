@@ -48,9 +48,12 @@ if (!(await Deno.stat("Cargo.toml")).isFile) {
   err(`the build script should be executed in the "${name}" root`);
 }
 
+await run("building wasm", ["cargo", "build", "--release", "--target", "wasm32-unknown-unknown"]);
+
 await run(
   "building using wasm-pack",
-  ["wasm-pack", "build", "--target", "web", "--release"],
+  /// ["wasm-pack", "build", "--target", "deno", "--weak-refs", "--release"],
+  ["wasm-bindgen", "target/wasm32-unknown-unknown/release/deno_swc.wasm" , "--target", "deno", "--weak-refs", "--out-dir", "pkg/"],
 );
 
 const wasm = await Deno.readFile(`pkg/${name}_bg.wasm`);
@@ -71,7 +74,13 @@ log(
 log("inlining wasm in js");
 const source = `import * as lz4 from "https://deno.land/x/lz4@v0.1.2/mod.ts";export const source=lz4.decompress(Uint8Array.from(atob("${encoded}"),c=>c.charCodeAt(0)));`;
 
-const init = await Deno.readTextFile(`pkg/${name}.js`);
+let init = await Deno.readTextFile(`pkg/${name}.js`);
+let lines = init.split('\n');
+// We want to replace this code.
+for (let i = 1; i < 4; i++) lines.splice(-i);
+init = lines.join('\n');
+init += `\nconst wasmModule = new WebAssembly.Module(source);\nconst wasmInstance = new WebAssembly.Instance(wasmModule, imports);\nconst wasm = wasmInstance.exports;\n`;
+console.log(init)
 
 log("minifying js");
 const output = Terser.minify(`${source}\n${init}`, {

@@ -53,7 +53,7 @@ checksum = "23b62fc65de8e4e7f52534fb52b0f3ed04746ae267519eef2a83941e8085068b"
 [[package]]
 name = "ast_node"
 version = "0.7.3"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "darling",
  "pmutil",
@@ -80,12 +80,6 @@ name = "base64"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b41b7ea54a0c9d92199de89e20e58d49f02f8e699814ef3fdf266f6f748d15c7"
-
-[[package]]
-name = "base64"
-version = "0.12.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3441f0f7b02788e948e47f457ca01f1d7e6d92c693bc132c22b087d3141c03ff"
 
 [[package]]
 name = "base64"
@@ -182,6 +176,56 @@ dependencies = [
 ]
 
 [[package]]
+name = "crossbeam-channel"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06ed27e177f16d65f0f0c22a213e17c696ace5dd64b14258b52f9417ccb52db4"
+dependencies = [
+ "cfg-if 1.0.0",
+ "crossbeam-utils",
+]
+
+[[package]]
+name = "crossbeam-deque"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6455c0ca19f0d2fbf751b908d5c55c1f5cbc65e03c4225427254b46890bdde1e"
+dependencies = [
+ "cfg-if 1.0.0",
+ "crossbeam-epoch",
+ "crossbeam-utils",
+]
+
+[[package]]
+name = "crossbeam-epoch"
+version = "0.9.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ec02e091aa634e2c3ada4a392989e7c3116673ef0ac5b72232439094d73b7fd"
+dependencies = [
+ "cfg-if 1.0.0",
+ "crossbeam-utils",
+ "lazy_static",
+ "memoffset",
+ "scopeguard 1.1.0",
+]
+
+[[package]]
+name = "crossbeam-utils"
+version = "0.8.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d82cfc11ce7f2c3faef78d8a684447b40d503d9681acebed6cb728d45940c4db"
+dependencies = [
+ "cfg-if 1.0.0",
+ "lazy_static",
+]
+
+[[package]]
+name = "cty"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7313c0d620d0cb4dbd9d019e461a4beb501071ff46ec0ab933efb4daa76d73e3"
+
+[[package]]
 name = "darling"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -230,6 +274,7 @@ dependencies = [
 name = "deno_swc"
 version = "0.0.1"
 dependencies = [
+ "anyhow",
  "console_error_panic_hook",
  "once_cell",
  "path-clean",
@@ -239,6 +284,8 @@ dependencies = [
  "swc",
  "swc_common",
  "swc_ecmascript",
+ "syn",
+ "unicode-xid",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wee_alloc",
@@ -262,7 +309,7 @@ checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 [[package]]
 name = "enum_kind"
 version = "0.2.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
@@ -285,19 +332,13 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 [[package]]
 name = "from_variant"
 version = "0.1.3"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
  "swc_macros_common",
  "syn",
 ]
-
-[[package]]
-name = "fs_extra"
-version = "1.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2022715d62ab30faffd124d40b76f4134a550a87792276512b18d63272333394"
 
 [[package]]
 name = "fuchsia-cprng"
@@ -423,27 +464,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc6f3ad7b9d11a0c00842ff8de1b60ee58661048eb8049ed33c73594f359d7e6"
 
 [[package]]
-name = "jemalloc-sys"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d3b9f3f5c9b31aa0f5ed3260385ac205db665baa41d49bb8338008ae94ede45"
-dependencies = [
- "cc",
- "fs_extra",
- "libc",
-]
-
-[[package]]
-name = "jemallocator"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43ae63fcfc45e99ab3d1b29a46782ad679e98436c3169d15a167a1108a724b69"
-dependencies = [
- "jemalloc-sys",
- "libc",
-]
-
-[[package]]
 name = "js-sys"
 version = "0.3.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -488,22 +508,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "320cfe77175da3a483efed4bc0adc1968ca050b098ce4f2f1c13a56626128790"
 
 [[package]]
-name = "libmimalloc-sys"
-version = "0.1.22"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d1b8479c593dba88c2741fc50b92e13dbabbbe0bd504d979f244ccc1a5b1c01"
-dependencies = [
- "cc",
-]
-
-[[package]]
 name = "lock_api"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "62ebf1391f6acad60e5c8b43706dde4582df75c06698ab44511d15016bc2442c"
 dependencies = [
  "owning_ref",
- "scopeguard",
+ "scopeguard 0.3.3",
 ]
 
 [[package]]
@@ -543,18 +554,38 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b16bd47d9e329435e309c58469fe0791c2d0d1ba96ec0954152a5ae2b04387dc"
 
 [[package]]
+name = "memoffset"
+version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "59accc507f1338036a0477ef61afdae33cde60840f4dfe481319ce3ad116ddf9"
+dependencies = [
+ "autocfg 1.0.0",
+]
+
+[[package]]
 name = "memory_units"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8452105ba047068f40ff7093dd1d9da90898e63dd61736462e9cdda6a90ad3c3"
 
 [[package]]
-name = "mimalloc"
-version = "0.1.26"
+name = "mimalloc-rust"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb74897ce508e6c49156fd1476fc5922cbc6e75183c65e399c765a09122e5130"
+checksum = "2ffcd5c93c5b59f49b89b58100fad6ea023dbec6f9344f0d0932a96d9497821a"
 dependencies = [
- "libmimalloc-sys",
+ "cty",
+ "mimalloc-rust-sys",
+]
+
+[[package]]
+name = "mimalloc-rust-sys"
+version = "1.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "96f7f32dcc7aeb79781116048bbd27cc819b9db55805690b3379d536d40e9590"
+dependencies = [
+ "cc",
+ "cty",
 ]
 
 [[package]]
@@ -949,6 +980,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "rayon"
+version = "1.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c06aca804d41dbc8ba42dfd964f0d01334eceb64314b9ecf7c5fad5188a06d90"
+dependencies = [
+ "autocfg 1.0.0",
+ "crossbeam-deque",
+ "either",
+ "rayon-core",
+]
+
+[[package]]
+name = "rayon-core"
+version = "1.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d78120e2c850279833f1dd3582f730c4ab53ed95aeaaaa862a2a5c71b1656d8e"
+dependencies = [
+ "crossbeam-channel",
+ "crossbeam-deque",
+ "crossbeam-utils",
+ "lazy_static",
+ "num_cpus",
+]
+
+[[package]]
 name = "rdrand"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1023,6 +1079,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94258f53601af11e6a49f722422f6e3425c52b06245a5cf9bc09908b174f5e27"
 
 [[package]]
+name = "scopeguard"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
+
+[[package]]
 name = "semver"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1066,6 +1128,16 @@ checksum = "799e97dc9fdae36a5c8b8f2cae9ce2ee9fdce2058c57a93e6099d919fd982f79"
 dependencies = [
  "itoa",
  "ryu",
+ "serde",
+]
+
+[[package]]
+name = "serde_regex"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8136f1a4ea815d7eac4101cfd0b16dc0cb5e1fe1b8609dfd728058656b7badf"
+dependencies = [
+ "regex",
  "serde",
 ]
 
@@ -1181,7 +1253,7 @@ dependencies = [
 [[package]]
 name = "string_enum"
 version = "0.3.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
@@ -1198,14 +1270,15 @@ checksum = "6446ced80d6c486436db5c078dde11a9f73d42b57fb273121e160b84f63d894c"
 
 [[package]]
 name = "swc"
-version = "0.29.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.43.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "ahash 0.7.4",
  "anyhow",
- "base64 0.12.3",
+ "base64 0.13.0",
  "dashmap",
  "either",
+ "fxhash",
  "log",
  "lru",
  "once_cell",
@@ -1221,19 +1294,22 @@ dependencies = [
  "swc_ecma_codegen",
  "swc_ecma_ext_transforms",
  "swc_ecma_loader",
+ "swc_ecma_minifier",
  "swc_ecma_parser",
  "swc_ecma_preset_env",
  "swc_ecma_transforms",
+ "swc_ecma_transforms_base",
  "swc_ecma_utils",
  "swc_ecma_visit",
+ "swc_ecmascript",
  "swc_node_base",
  "swc_visit",
 ]
 
 [[package]]
 name = "swc_atoms"
-version = "0.2.6"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.2.7"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "string_cache",
  "string_cache_codegen",
@@ -1241,8 +1317,8 @@ dependencies = [
 
 [[package]]
 name = "swc_bundler"
-version = "0.46.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.54.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "ahash 0.7.4",
  "anyhow",
@@ -1269,9 +1345,10 @@ dependencies = [
 
 [[package]]
 name = "swc_common"
-version = "0.11.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.11.6"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
+ "ahash 0.7.4",
  "ast_node",
  "cfg-if 0.1.10",
  "either",
@@ -1293,8 +1370,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_ast"
-version = "0.49.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.49.4"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "is-macro",
  "num-bigint",
@@ -1306,8 +1383,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_codegen"
-version = "0.62.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.67.1"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "bitflags",
  "num-bigint",
@@ -1322,7 +1399,7 @@ dependencies = [
 [[package]]
 name = "swc_ecma_codegen_macros"
 version = "0.5.2"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
@@ -1333,8 +1410,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_ext_transforms"
-version = "0.21.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.25.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "phf",
  "swc_atoms",
@@ -1347,11 +1424,13 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_loader"
-version = "0.11.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.15.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "anyhow",
  "dashmap",
+ "fxhash",
+ "log",
  "lru",
  "normpath",
  "once_cell",
@@ -1365,9 +1444,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "swc_ecma_minifier"
+version = "0.22.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
+dependencies = [
+ "fxhash",
+ "indexmap",
+ "log",
+ "once_cell",
+ "rayon",
+ "regex",
+ "retain_mut",
+ "serde",
+ "serde_json",
+ "serde_regex",
+ "swc_atoms",
+ "swc_common",
+ "swc_ecma_ast",
+ "swc_ecma_codegen",
+ "swc_ecma_parser",
+ "swc_ecma_transforms",
+ "swc_ecma_transforms_base",
+ "swc_ecma_utils",
+ "swc_ecma_visit",
+ "unicode-xid",
+]
+
+[[package]]
 name = "swc_ecma_parser"
-version = "0.63.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.67.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "either",
  "enum_kind",
@@ -1386,8 +1492,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_preset_env"
-version = "0.29.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.38.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "dashmap",
  "fxhash",
@@ -1409,8 +1515,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms"
-version = "0.59.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.67.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "swc_atoms",
  "swc_common",
@@ -1430,8 +1536,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_base"
-version = "0.22.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.27.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "fxhash",
  "once_cell",
@@ -1448,8 +1554,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_classes"
-version = "0.8.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.13.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "swc_atoms",
  "swc_common",
@@ -1461,8 +1567,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_compat"
-version = "0.25.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.30.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "arrayvec",
  "fxhash",
@@ -1485,7 +1591,7 @@ dependencies = [
 [[package]]
 name = "swc_ecma_transforms_macros"
 version = "0.2.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
@@ -1496,8 +1602,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_module"
-version = "0.26.1"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.34.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -1517,8 +1623,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_optimization"
-version = "0.29.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.37.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "dashmap",
  "fxhash",
@@ -1538,8 +1644,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_proposal"
-version = "0.26.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.34.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "either",
  "fxhash",
@@ -1557,8 +1663,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_react"
-version = "0.27.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.35.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "base64 0.13.0",
  "dashmap",
@@ -1579,8 +1685,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_transforms_typescript"
-version = "0.28.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.36.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "fxhash",
  "serde",
@@ -1595,8 +1701,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_utils"
-version = "0.40.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.41.3"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "once_cell",
  "scoped-tls",
@@ -1609,8 +1715,8 @@ dependencies = [
 
 [[package]]
 name = "swc_ecma_visit"
-version = "0.35.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.35.2"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "num-bigint",
  "swc_atoms",
@@ -1621,16 +1727,17 @@ dependencies = [
 
 [[package]]
 name = "swc_ecmascript"
-version = "0.46.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.57.0"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "swc_ecma_ast",
+ "swc_ecma_parser",
 ]
 
 [[package]]
 name = "swc_eq_ignore_macros"
 version = "0.1.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
@@ -1641,7 +1748,7 @@ dependencies = [
 [[package]]
 name = "swc_macros_common"
 version = "0.3.3"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "pmutil",
  "proc-macro2",
@@ -1651,19 +1758,18 @@ dependencies = [
 
 [[package]]
 name = "swc_node_base"
-version = "0.2.0"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.2.2"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "dashmap",
- "jemallocator",
- "mimalloc",
+ "mimalloc-rust",
  "swc_common",
 ]
 
 [[package]]
 name = "swc_visit"
-version = "0.2.4"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+version = "0.2.6"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "either",
  "swc_visit_macros",
@@ -1672,7 +1778,7 @@ dependencies = [
 [[package]]
 name = "swc_visit_macros"
 version = "0.2.3"
-source = "git+https://github.com/swc-project/swc?rev=d6454ad#d6454add72d342933482ac021eedfca99c61e9bb"
+source = "git+https://github.com/swc-project/swc?rev=6eaf60b#6eaf60b8a4902228b758873e805032b696673493"
 dependencies = [
  "Inflector",
  "pmutil",
@@ -1731,9 +1837,9 @@ checksum = "9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3"
 
 [[package]]
 name = "unicode-xid"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f7fe0bb3479651439c9112f72b6c505038574c9fbb575ed1bf3b797fa39dd564"
+checksum = "8ccb82d61f80a663efe1f787a51b16b5a51e3314d6ac365b08639f52387b33f3"
 
 [[package]]
 name = "url"

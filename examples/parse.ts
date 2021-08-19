@@ -1,4 +1,6 @@
 import { parse } from "../mod.ts";
+const start = performance.now();
+// const end = performance.now() - start;
 
 console.log(parse(
   `
@@ -8,3 +10,5 @@ console.log(parse(
     syntax: "ecmascript",
   },
 ));
+const end = performance.now() - start;
+console.log(end);
