@@ -29,6 +29,9 @@ jobs:
           # TODO(littledivy): Maybe lock to stable rustc?
           rust-version: nightly
 
+      - name: Install wasm32-unknown-unknown target
+        run: rustup target add wasm32-unknown-unknown
+
       - name: Install wasm-bindgen
         run: cargo install --version 0.2.72 wasm-bindgen-cli
       
