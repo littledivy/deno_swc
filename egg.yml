@@ -2,7 +2,7 @@ name: swc
 description: The SWC compiler for Deno
 stable: true
 repository: 'https://github.com/nestdotland/deno_swc'
-version: 0.1.2
+version: 0.1.4
 files:
   - README.md
   - ./swc_wasm/wasm.js
