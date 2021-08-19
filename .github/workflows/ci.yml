@@ -23,13 +23,14 @@ jobs:
       - uses: actions/checkout@master
       - uses: denolib/setup-deno@master
         with:
-          deno-version: 1.12.2
+          deno-version: 1.13.1
       - uses: hecrj/setup-rust-action@v1
         with:
           # TODO(littledivy): Maybe lock to stable rustc?
           rust-version: nightly
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install wasm-bindgen
+        run: cargo install --version 0.2.72 wasm-bindgen-cli
       
       - name: Cache Cargo home
         uses: actions/cache@v2
@@ -53,3 +54,4 @@ jobs:
       
       - name: Test
         run: make test
+

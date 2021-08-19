@@ -42,7 +42,7 @@ function err(text) {
   return Deno.exit(1);
 }
 
-await requires("rustup", "rustc", "cargo", "wasm-pack");
+await requires("rustup", "rustc", "cargo", "wasm-bindgen");
 
 if (!(await Deno.stat("Cargo.toml")).isFile) {
   err(`the build script should be executed in the "${name}" root`);
@@ -52,7 +52,6 @@ await run("building wasm", ["cargo", "build", "--release", "--target", "wasm32-u
 
 await run(
   "building using wasm-pack",
-  /// ["wasm-pack", "build", "--target", "deno", "--weak-refs", "--release"],
   ["wasm-bindgen", "target/wasm32-unknown-unknown/release/deno_swc.wasm" , "--target", "deno", "--weak-refs", "--out-dir", "pkg/"],
 );
 
