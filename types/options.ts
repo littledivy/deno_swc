@@ -849,19 +849,20 @@ export interface ObjectExpression extends ExpressionBase {
   properties: (Property | SpreadElement)[];
 }
 
-export interface Argument {
+export interface Argument<Expr extends Expression = Expression> {
   spread?: Span;
-  expression: Expression;
+  expression: Expr;
 }
 
 export type PropertOrSpread = Property | SpreadElement;
 
-export interface SpreadElement extends Node {
+export interface SpreadElement<Expr extends Expression = Expression>
+  extends Node {
   type: "SpreadElement";
 
   spread: Span;
 
-  arguments: Expression;
+  arguments: Expr;
 }
 
 export interface UnaryExpression extends ExpressionBase {
@@ -938,22 +939,24 @@ export interface Super extends Node, HasSpan {
   type: "Super";
 }
 
-export interface CallExpression extends ExpressionBase {
+export interface CallExpression<Expr extends Expression = Expression>
+  extends ExpressionBase {
   type: "CallExpression";
 
-  callee: Expression | Super;
+  callee: Expr | Super;
 
-  arguments: Argument[];
+  arguments: Argument<Expr>[];
 
   typeArguments?: TsTypeParameterInstantiation;
 }
 
-export interface NewExpression extends ExpressionBase {
+export interface NewExpression<Expr extends Expression = Expression>
+  extends ExpressionBase {
   type: "NewExpression";
 
   callee: Expression;
 
-  arguments: Argument[];
+  arguments: Argument<Expr>[];
 
   typeArguments?: TsTypeParameterInstantiation;
 }
