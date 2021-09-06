@@ -967,12 +967,13 @@ export interface SequenceExpression extends ExpressionBase {
   expressions: Expression[];
 }
 
-export interface ArrowFunctionExpression extends ExpressionBase {
+export interface ArrowFunctionExpression<Expr extends Expression = Expression>
+  extends ExpressionBase {
   type: "ArrowFunctionExpression";
 
   params: Pattern[];
 
-  body: BlockStatement | Expression;
+  body: BlockStatement | Expr;
 
   async: boolean;
 
