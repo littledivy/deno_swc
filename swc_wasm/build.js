@@ -1,5 +1,4 @@
-import { encode } from "https://deno.land/std@0.103.0/encoding/base64.ts";
-import Terser from "https://esm.sh/terser@4.8.0";
+import { encode } from "https://deno.land/std@0.134.0/encoding/base64.ts";
 import * as lz4 from "https://deno.land/x/lz4@v0.1.2/mod.ts";
 
 const name = "deno_swc";
@@ -48,57 +47,78 @@ if (!(await Deno.stat("Cargo.toml")).isFile) {
   err(`the build script should be executed in the "${name}" root`);
 }
 
-await run("building wasm", ["cargo", "build", "--release", "--target", "wasm32-unknown-unknown"]);
+await run("building wasm", [
+  "cargo",
+  "build",
+  "--release",
+  "--target",
+  "wasm32-unknown-unknown",
+]);
 
 await run(
   "building using wasm-pack",
-  ["wasm-bindgen", "target/wasm32-unknown-unknown/release/deno_swc.wasm" , "--target", "deno", "--weak-refs", "--out-dir", "pkg/"],
+  [
+    "wasm-bindgen",
+    "target/wasm32-unknown-unknown/release/deno_swc.wasm",
+    "--target",
+    "deno",
+    "--weak-refs",
+    "--out-dir",
+    "pkg/",
+  ],
 );
 
 const wasm = await Deno.readFile(`pkg/${name}_bg.wasm`);
 
 const compressed = lz4.compress(wasm);
 console.log(
-  `compressed wasm using lz4      (reduction: ${wasm.length -
-    compressed.length} bytes, size: ${compressed.length} bytes)`,
+  `compressed wasm using lz4      (reduction: ${
+    wasm.length -
+    compressed.length
+  } bytes, size: ${compressed.length} bytes)`,
 );
 
 const encoded = encode(compressed);
 
 log(
-  `encoded wasm using base64, size increase: ${encoded.length -
-    wasm.length} bytes`,
+  `encoded wasm using base64, size increase: ${
+    encoded.length -
+    wasm.length
+  } bytes`,
 );
 
 log("inlining wasm in js");
-const source = `import * as lz4 from "https://deno.land/x/lz4@v0.1.2/mod.ts";export const source=lz4.decompress(Uint8Array.from(atob("${encoded}"),c=>c.charCodeAt(0)));`;
+const source =
+  `import * as lz4 from "https://deno.land/x/lz4@v0.1.2/mod.ts";export const source=lz4.decompress(Uint8Array.from(atob("${encoded}"),c=>c.charCodeAt(0)));`;
 
 let init = await Deno.readTextFile(`pkg/${name}.js`);
-let lines = init.split('\n');
-// We want to replace this code.
-for (let i = 1; i < 4; i++) lines.splice(-i);
-init = lines.join('\n');
-init += `\nconst wasmModule = new WebAssembly.Module(source);\nconst wasmInstance = new WebAssembly.Instance(wasmModule, imports);\nconst wasm = wasmInstance.exports;\n`;
-console.log(init)
+const indexOfWasmInstance = init.indexOf("const wasmInstance");
+
+init = init.slice(0, indexOfWasmInstance - 1);
+init +=
+  `\nconst wasmModule = new WebAssembly.Module(source);\nconst wasmInstance = new WebAssembly.Instance(wasmModule, imports);\nconst wasm = wasmInstance.exports;\n`;
+console.log(init);
 
 log("minifying js");
-const output = Terser.minify(`${source}\n${init}`, {
-  mangle: { module: true },
-  output: {
-    preamble: "//deno-fmt-ignore-file",
-  },
+import { minifySync } from "./pkg/deno_swc.js";
+const output = minifySync(`${source}\n${init}`, {
+  ecma: 2020,
+  toplevel: true,
 });
 
 if (output.error) {
   err(`encountered error when minifying: ${output.error}`);
 }
 
-const reduction = new Blob([(`${source}\n${init}`)]).size -
+const reduction = new Blob([`${source}\n${init}`]).size -
   new Blob([output.code]).size;
 log(`minified js, size reduction: ${reduction} bytes`);
 
 log(`writing output to file ("wasm.js")`);
-await Deno.writeFile("wasm.js", encoder.encode(output.code));
+await Deno.writeFile(
+  "wasm.js",
+  encoder.encode("//deno-fmt-ignore-file\n" + output.code),
+);
 
 const outputFile = await Deno.stat("wasm.js");
 log(
