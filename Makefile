@@ -1,8 +1,8 @@
 ifeq ($(OS),Windows_NT)
-	WASM_SOURCE := swc_wasm\lib.rs
+	WASM_SOURCE := swc_wasm\src\lib.rs
 	WASM_BUILD := swc_wasm\pkg\deno_swc_bg.wasm
 else
-	WASM_SOURCE := swc_wasm/lib.rs
+	WASM_SOURCE := swc_wasm/src/lib.rs
 	WASM_BUILD := swc_wasm/pkg/deno_swc_bg.wasm
 endif
 
