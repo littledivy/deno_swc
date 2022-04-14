@@ -92,7 +92,7 @@ const source =
   `import * as lz4 from "https://deno.land/x/lz4@v0.1.2/mod.ts";export const source=lz4.decompress(Uint8Array.from(atob("${encoded}"),c=>c.charCodeAt(0)));`;
 
 let init = await Deno.readTextFile(`pkg/${name}.js`);
-const indexOfWasmInstance = init.indexOf("const wasmInstance");
+const indexOfWasmInstance = init.indexOf("const wasm_url = new URL");
 
 init = init.slice(0, indexOfWasmInstance - 1);
 init +=
