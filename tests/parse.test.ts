@@ -28,6 +28,7 @@ Deno.test("parse (no error)", () => {
               value: "x",
             },
             init: {
+              raw: "2",
               span: { ctxt: 0, end: 19, start: 18 },
               type: "NumericLiteral",
               value: 2,
