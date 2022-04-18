@@ -1,4 +1,5 @@
 import { encode } from "https://deno.land/std@0.134.0/encoding/base64.ts";
+import Terser from "https://esm.sh/terser@4.8.0";
 import * as lz4 from "https://deno.land/x/lz4@v0.1.2/mod.ts";
 
 const name = "deno_swc";
@@ -100,10 +101,11 @@ init +=
 console.log(init);
 
 log("minifying js");
-import { minifySync } from "./pkg/deno_swc.js";
-const output = minifySync(`${source}\n${init}`, {
-  ecma: 2020,
-  toplevel: true,
+const output = Terser.minify(`${source}\n${init}`, {
+  mangle: { module: true },
+  output: {
+    preamble: "//deno-fmt-ignore-file",
+  },
 });
 
 if (output.error) {
@@ -117,7 +119,7 @@ log(`minified js, size reduction: ${reduction} bytes`);
 log(`writing output to file ("wasm.js")`);
 await Deno.writeFile(
   "wasm.js",
-  encoder.encode("//deno-fmt-ignore-file\n" + output.code),
+  encoder.encode(output.code),
 );
 
 const outputFile = await Deno.stat("wasm.js");

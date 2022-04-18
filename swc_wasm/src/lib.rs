@@ -2,22 +2,15 @@ use anyhow::{Context, Error};
 use once_cell::sync::Lazy;
 use std::sync::Arc;
 use swc::{
-    atoms::JsWord,
     config::{JsMinifyOptions, Options, ParseOptions, SourceMapsConfig},
     try_with_handler, Compiler,
 };
-use swc_common::{
-    collections::AHashMap, errors::ColorConfig, BytePos, FileName, FilePathMapping, SourceMap,
-};
+use swc_common::{errors::ColorConfig, FileName, FilePathMapping, SourceMap};
 use swc_ecmascript::ast::Program;
 use wasm_bindgen::prelude::*;
 
 fn convert_err(err: Error) -> JsValue {
     format!("{:?}", err).into()
-}
-
-pub struct IdentCollector {
-    names: AHashMap<BytePos, JsWord>,
 }
 
 #[wasm_bindgen(js_name = "minifySync")]
@@ -86,16 +79,7 @@ pub fn print_sync(s: JsValue, opts: JsValue) -> Result<JsValue, JsValue> {
         },
         |_handler| {
             let opts: Options = opts.into_serde().context("failed to parse options")?;
-
             let program: Program = s.into_serde().context("failed to deserialize program")?;
-
-            let source_map_names = {
-                let v = IdentCollector {
-                    names: Default::default(),
-                };
-
-                v.names
-            };
 
             let s = c
                 .print(
@@ -107,7 +91,7 @@ pub fn print_sync(s: JsValue, opts: JsValue) -> Result<JsValue, JsValue> {
                     opts.source_maps
                         .clone()
                         .unwrap_or(SourceMapsConfig::Bool(false)),
-                    &source_map_names,
+                    &Default::default(),
                     None,
                     opts.config.minify,
                     None,
