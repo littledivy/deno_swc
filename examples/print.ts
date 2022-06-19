@@ -1,4 +1,3 @@
-// import { parse, print } from "https://raw.githubusercontent.com/nestdotland/deno_swc/master/mod.ts";
 import { parse, print } from "../mod.ts";
 
 const code = `
@@ -30,8 +29,4 @@ const regeneratedCode = print(ast, {
   },
 }).code;
 
-// console.log(code);
-// console.log(ast);
 console.log(regeneratedCode);
-
-// interface H{h:string;}const x:string=`Hello, ${"Hello"} Deno SWC!`;switch(x){case "value":console.log(x);break;default:break}

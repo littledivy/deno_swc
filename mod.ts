@@ -1,11 +1,12 @@
-import { parseSync, printSync, transformSync } from "./swc_wasm/wasm.js";
-
+import { instantiate } from "./lib/deno_swc.generated.js";
 import {
   Config,
   ParseOptions,
   Program,
   TransformConfig,
 } from "./types/options.ts";
+
+const { parseSync, printSync, transformSync } = await instantiate();
 
 export function parse(source: string, opts: ParseOptions): Program {
   return parseSync(source, opts);

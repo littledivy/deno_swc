@@ -23,10 +23,9 @@ jobs:
       - uses: actions/checkout@master
       - uses: denolib/setup-deno@master
         with:
-          deno-version: 1.13.1
+          deno-version: 1.23.0
       - uses: hecrj/setup-rust-action@v1
         with:
-          # TODO(littledivy): Maybe lock to stable rustc?
           rust-version: nightly
 
       - name: Install wasm32-unknown-unknown target
@@ -48,13 +47,13 @@ jobs:
       - name: Cache build output
         uses: actions/cache@03e00da99d75a2204924908e1cca7902cafce66b
         with:
-          path: swc_wasm/target
+          path: target
           key: |
             f-cargo-target-${{ matrix.os }}-${{ matrix.profile }}-
       
       - name: Build
-        run: make
+        run: deno task build
       
       - name: Test
-        run: make test
+        run: deno task test
 
