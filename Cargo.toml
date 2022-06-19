@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "swc_wasm/"
+]
+
+[profile.release]
+lto = true
+opt-level = "s"

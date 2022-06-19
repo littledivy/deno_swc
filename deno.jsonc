@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "build": "deno run -A --unstable https://raw.githubusercontent.com/denoland/wasmbuild/main/main.ts",
+    "fmt": "deno fmt --ignore=swc_wasm,lib,target --unstable && cargo fmt",
+    "test": "deno test -A --no-check tests/"
+  }
+}

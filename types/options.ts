@@ -70,7 +70,6 @@ export interface Options extends Config {
    * a directory containing a swc.config.js file, and falls back to "root"
    *  if a swc.config.js is not found.
    *
-   *
    * "root" is the default mode because it avoids the risk that Swc
    * will accidentally load a swc.config.js that is entirely outside
    * of the current project folder. If you use "upward-optional",
@@ -78,7 +77,6 @@ export interface Options extends Config {
    * way to the filesystem root, and it is always possible that someone
    * will have a forgotten swc.config.js in their home directory,
    * which could cause unexpected errors in your builds.
-   *
    *
    * Users with monorepo project structures that run builds/tests on a
    * per-package basis may well want to use "upward" since monorepos
@@ -103,7 +101,6 @@ export interface Options extends Config {
    * Defaults to searching for a default `.swcrc` file, but can
    * be passed the path of any JS or JSON5 config file.
    *
-   *
    * NOTE: This option does not affect loading of .swcrc files,
    * so while it may be tempting to do configFile: "./foo/.swcrc",
    * it is not recommended. If the given .swcrc is loaded via the
@@ -124,7 +121,6 @@ export interface Options extends Config {
    * Note: .swcrc files are only loaded if the current "filename" is inside of
    *  a package that matches one of the "swcrcRoots" packages.
    *
-   *
    * Defaults to true as long as the filename option has been specificed
    */
   swcrc?: boolean;
@@ -135,15 +131,11 @@ export interface Options extends Config {
    *  or if it's "plugins" and "presets" have even been installed, since the file
    *  being compiled could be inside node_modules, or have been symlinked into the project.
    *
-   *
    * This option allows users to provide a list of other packages that should be
    * considered "root" packages when considering whether to load .babelrc files.
    *
-   *
    * For example, a monorepo setup that wishes to allow individual packages
    * to have their own configs might want to do
-   *
-   *
    *
    * Defaults to `opts.root`
    */
@@ -244,7 +236,6 @@ export interface EnvConfig {
 
   /**
    * The version of the used core js.
-   *
    */
   coreJs?: string;
 
@@ -425,7 +416,6 @@ export interface ReactConfig {
    *
    * Though the JSX spec allows this, it is disabled by default since React's
    * JSX does not currently have support for it.
-   *
    */
   throwIfNamespace: boolean;
   /**
@@ -433,7 +423,6 @@ export interface ReactConfig {
    * and @swc/plugin-transform-react-jsx-source.
    *
    * Defaults to `false`,
-   *
    */
   development: boolean;
   /**
@@ -526,7 +515,6 @@ export interface BaseModuleConfig {
    * This can improve initial load time of your module because evaluating dependencies up
    *  front is sometimes entirely un-necessary. This is especially the case when implementing
    *  a library module.
-   *
    *
    * The value of `lazy` has a few possible effects:
    *
