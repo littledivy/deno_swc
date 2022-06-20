@@ -1,7 +1,7 @@
 <br />
 <p align="center">
-  <a href="https://github.com/nestdotland/deno_swc">
-    <img src="https://raw.githubusercontent.com/nestdotland/deno_swc/master/assets/deno_swc.png" alt="deno_swc logo" width="310">
+  <a href="https://github.com/littledivy/deno_swc">
+    <img src="https://raw.githubusercontent.com/littledivy/deno_swc/master/assets/deno_swc.png" alt="deno_swc logo" width="310">
   </a>
   <h3 align="center">deno_swc</h3>
 
@@ -10,15 +10,15 @@
  </p>
 </p>
 
-![ci](https://github.com/nestdotland/deno_swc/workflows/ci/badge.svg)
-![](https://img.shields.io/github/v/release/nestdotland/deno_swc?style=plastic)
+![ci](https://github.com/littledivy/deno_swc/workflows/ci/badge.svg)
+![](https://img.shields.io/github/v/release/littledivy/deno_swc?style=plastic)
 
 # Usage
 
 `parse()`
 
 ```typescript
-import { parse, print } from "https://x.nest.land/swc@0.1.4/mod.ts";
+import { parse, print } from "https://deno.land/x/swc@0.2.0/mod.ts";
 
 const code = `const x: string = "Hello, Deno SWC!"`;
 
