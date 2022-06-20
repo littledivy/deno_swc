@@ -1,6 +1,9 @@
 {
   "tasks": {
-    "build": "deno run -A --unstable https://raw.githubusercontent.com/denoland/wasmbuild/main/main.ts",
+    "build": "deno run -A --unstable https://raw.githubusercontent.com/denoland/wasmbuild/0e62b100df246567bee43eea227456222b7fc1dd/main.ts && deno task build:compress",
+    // Use a canary / local version of wasmbuild
+    "build:local": "deno run -A --unstable ../wasmbuild/main.ts && deno task build:compress",
+    "build:compress": "deno run --allow-read --allow-write compress.ts",
     "fmt": "deno fmt --ignore=swc_wasm,lib,target --unstable && cargo fmt",
     "test": "deno test -A --no-check tests/"
   }
