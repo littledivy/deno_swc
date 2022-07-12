@@ -18,7 +18,7 @@
 `parse()`
 
 ```typescript
-import { parse, print } from "https://deno.land/x/swc@0.2.0/mod.ts";
+import { parse, print } from "https://deno.land/x/swc@0.2.1/mod.ts";
 
 const code = `const x: string = "Hello, Deno SWC!"`;
 
